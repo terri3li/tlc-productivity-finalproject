@@ -6,11 +6,11 @@ ProductivitySiteThatNeedsAName [CB-WD-23 Final Project]
 Contains a user database with Mongo: 
 
 * Ability to Sign Up new accounts 
-Checks for existing accounts, email @'s, & matching passwords
-Adds new user to database
+* Checks for existing accounts, email @'s, & matching passwords
+* Adds new user to database
 
 * User
-{   
+* {   
     id:
     firstName:
     lastName:
@@ -21,8 +21,8 @@ Adds new user to database
 }
 
 * LogIn 
-Stored in local storage 
-Used as a conditional for most site functionality
+* Stored in local storage 
+* Used as a conditional for most site functionality
 
 * Stretch 
-Structure as a social media platform (enable adding friends, etc)
+* Structure as a social media platform (enable adding friends, etc)
