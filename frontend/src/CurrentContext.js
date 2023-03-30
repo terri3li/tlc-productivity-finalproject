@@ -7,6 +7,7 @@ export const CurrentContext = createContext(null);
 const CurrentProvider = ({ children }) => {
   const [theme, setTheme] = useState("light");
   const [mongoUser, setMongoUser] = useState({});
+  const [tasksCompleted, setTasksCompleted] = useState(0);
   const { user, isAuthenticated, isLoading } = useAuth0();
   const currentTime = format(new Date(), "HH:mm a").toLowerCase();
   let autho0User = {};
@@ -47,7 +48,7 @@ const CurrentProvider = ({ children }) => {
 
   return (
     <>
-      <CurrentContext.Provider value={{ currentTime, theme, setTheme }}>
+      <CurrentContext.Provider value={{ currentTime, theme, setTheme, tasksCompleted, setTasksCompleted }}>
         {children}
       </CurrentContext.Provider>
     </>

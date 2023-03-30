@@ -1,50 +1,77 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styled from "styled-components";
+import { CurrentContext } from "../CurrentContext";
+
 
 const ToDoList = () => {
-  //may break this down into smaller components
 
-  //set individual to do items & to do list (array) in state
   const [toDo, setToDo] = useState("");
   const [toDos, setToDos] = useState([]);
+  const [editToDo, setEditToDo] = useState(0);
+  const {tasksCompleted, setTasksCompleted} = useContext(CurrentContext);
+
+  console.log(tasksCompleted);
 
   //prevent refresh, submit new to do item
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if(editToDo) {
+      const editItem = toDos.find((item) => item.id === editToDo);
+
+      const updatedToDos = toDos.map((td) => {
+        return td.id === editItem.id ?
+    ( td = {id: td.id, toDo}) : ({id: td.id, toDo: td.toDo})
+    });
+    
+      setToDos(updatedToDos);
+      setEditToDo(0);
+      setToDo("");
+      return;
+      }
 
     if (toDo !== "") {
       setToDos([{ id: `${toDo}-${Date.now()}`, toDo }, ...toDos]);
       setToDo("");
     }
   };
-
-  const updateToDo = (e) => {
-    setToDo(e.target.value);
+    
+  
+  const handleEdit = (id) => {
+    const edit = toDos.find((item) => item.id === id);
+    setToDo(edit.toDo);
+    setEditToDo(id);
   };
-
-  const handleEdit = (id) => {};
-
+  
   const handleDelete = (id) => {
-    console.log(id);
     const deleteToDo = toDos.filter((toDo) => toDo.id !== id);
     setToDos([...deleteToDo]);
   };
+  
+  const handleComplete = (id) => {
+    setTasksCompleted(tasksCompleted + 1)
+    console.log(tasksCompleted);
+    const deleteToDo = toDos.filter((toDo) => toDo.id !== id);
+    setToDos([...deleteToDo]);
 
-  const handleComplete = (id) => {};
+  };
+  
+  const updateToDo = (e) => {
+    setToDo(e.target.value);
+  };
 
   return (
     <>
       <h2>To Do List</h2>
       <form onSubmit={handleSubmit}>
         <input type="text" value={toDo} onChange={updateToDo} />
-        <button type="submit">Enter</button>
+        <button type="submit">{editToDo ? "Edit" : "Enter"}</button>
       </form>
 
       {/* ---posted to do items below--- */}
 
       <ul>
         {toDos.map((item) => {
-          console.log(item.toDo);
           return (
             <li key={item.id}>
               <ToDoItem>{item.toDo}</ToDoItem>
@@ -62,7 +89,7 @@ const ToDoList = () => {
               >
                 delete
               </button>
-              {/* add a second "are you sure" step for delete */}
+              {/* stretch: add a second "are you sure" step for delete */}
               <button
                 onClick={() => {
                   handleComplete(item.id);
@@ -70,6 +97,7 @@ const ToDoList = () => {
               >
                 complete
               </button>
+              {/* stretch: add a "congrats!" msg for complete */}
             </li>
           );
         })}
