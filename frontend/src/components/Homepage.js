@@ -1,10 +1,10 @@
 import NavBar from "./NavBar";
-import ToDo from "./ToDo";
 import Header from "./Header";
 import Goals from "./Goals";
 import styled from "styled-components";
 import Calendar from "./Calendar";
 import APICalendar from "./APICalendar";
+import ToDoList from "./ToDoList";
 
 const Homepage = () => {
   return (
@@ -15,12 +15,12 @@ const Homepage = () => {
       <MainContainer>
         <LeftContainer>
           <Goals />
-          <ToDo />
+          <ToDoList />
         </LeftContainer>
 
         <RightContainer>
           {/* <Calendar /> */}
-          <APICalendar/>
+          <APICalendar />
         </RightContainer>
       </MainContainer>
     </>
@@ -30,7 +30,7 @@ const Homepage = () => {
 export default Homepage;
 
 const MainContainer = styled.div`
-display: flex;
+  display: flex;
 `;
 
 const LeftContainer = styled.div``;

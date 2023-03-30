@@ -1,45 +1,40 @@
 import { useContext } from "react";
+import { NavLink } from "react-router-dom";
+import styled from "styled-components";
 import { CurrentContext } from "../CurrentContext";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Login = () => {
+    const { loginWithRedirect } = useAuth0();
 
-    const { currentUser, setCurrentUser } = useContext(CurrentContext);
+  const someEvent = (e) => {};
 
-    //copied from context, need to update
+  return (
+    <>
+      {/* <h1>Welcome Back!</h1>
+      <h2>Login:</h2>
 
-    // const signInSubmit = (e) => {
-    //     e.preventDefault();
-    
-    //     fetch("/api/signin", {
-    //       method: "POST",
-    //       headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({ username }),
-    //     })
-    //       .then((res) => res.json())
-    //       .then((data) => {
-    //         if (data.status === 200) {
-    //           window.localStorage.setItem("currentUser", JSON.stringify(data));
-    //           setCurrentUser(data)
-    //           navigate("/");
-    //         }
-    
-    //         if (data.status === 400) {
-    //           setErrorMsg(data.message);
-    //         }
-    //       })
-    //       .catch((error) => {
-    //         setErrorMsg("Try again later");
-    //       });
-    //   };
-    
-    return (
-        <>
-        
-        </>
-    )
-}
+      <form onSubmit={() => login()}>
+        <input type="text" name="username" placeholder="username" />
+        <input type="password" name="password" placeholder="password" />
+        <button> Sign In</button>
+      </form>
 
-export default Login; 
+      <h4>
+        Not a member? Sign up <SignUpLink to="/signup">here!</SignUpLink>
+      </h4> */}
+
+<button onClick={() => loginWithRedirect()}>
+Login
+</button>
+    </>
+  );
+};
+
+const SignUpLink = styled(NavLink)`
+  text-decoration: none;
+  color: red;
+  font-weight: bold;
+`;
+
+export default Login;

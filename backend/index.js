@@ -4,6 +4,10 @@ const express = require("express");
 const morgan = require("morgan");
 const port = 8880;
 
+const {
+ addUser
+} = require("./handlers");
+
 express()
   .use(morgan("tiny"))
   .use(express.json())
@@ -12,11 +16,7 @@ express()
   // probably won't need
   .use(express.static("public"))
 
-  .get("/test", (req, res) => {
-    res.status(200).json({
-      message: "Helllllo",
-    });
-  })
+  .post("/new-user", addUser)
 
   // catch all
   .get("*", (req, res) => {

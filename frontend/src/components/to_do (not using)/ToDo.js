@@ -1,12 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import Task from "./Task";
+import Task from "../Task";
 
 const ToDo = () => {
 
   const [formData, setFormData] = useState("");
-  const [toDo, setToDo] = useState([]);
+  const [toDos, setToDos] = useState([]);
  
   let navigate = useNavigate();
 
@@ -24,14 +24,17 @@ const addToList = (e) => {
   value: formData
 }
 
-setToDo(toDoList => [...toDoList, task]);
+setToDos(toDoList => [...toDoList, task]);
 setFormData("");
 
 }
 
+///will need to setFormData("") once button clicked so the box resets 
+
   return (
     <>
     <ToDoTitle>To Do List:</ToDoTitle>
+    //----form
       <form onSubmit={addToList}>
         <ToDoInput
           type="text"
@@ -41,6 +44,7 @@ setFormData("");
         />
         <EnterButton type="submit">Add to list</EnterButton>
       </form>
+      //----endform
       {/* <Task/> */}
     </>
   );
