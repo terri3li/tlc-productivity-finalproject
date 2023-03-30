@@ -6,10 +6,9 @@ import { CurrentContext } from "../CurrentContext";
 import Logout from "./Logout";
 
 const NavBar = () => {
-  // const {currentTime} = useContext(CurrentContext)
+  const {isAuthenticated} = useContext(CurrentContext);
   const [currentTime, setCurrentTime] = useState();
   const navigate = useNavigate();
-  
 
   const clock = () => {
     let date = new Date();
@@ -38,7 +37,7 @@ const Login = (e) => {
   return (
     <>
       <NavContainer>
-        {localStorage ? (
+        {!isAuthenticated ? (
           <button onClick={Login}>Log In || Sign Up</button>
         ) : (
           <button>Profile</button>
@@ -46,7 +45,7 @@ const Login = (e) => {
 
         <h3>{currentTime}</h3>
         {/* <button>Treat Yourself</button> */}
-        <h3>Rank</h3>
+        <h3>***</h3>
         <Logout/>
       </NavContainer>
     </>

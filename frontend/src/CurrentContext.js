@@ -48,7 +48,7 @@ const CurrentProvider = ({ children }) => {
 
   return (
     <>
-      <CurrentContext.Provider value={{ currentTime, theme, setTheme, tasksCompleted, setTasksCompleted }}>
+      <CurrentContext.Provider value={{ isAuthenticated, currentTime, theme, setTheme, tasksCompleted, setTasksCompleted }}>
         {children}
       </CurrentContext.Provider>
     </>

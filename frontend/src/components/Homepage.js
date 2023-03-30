@@ -2,7 +2,6 @@ import NavBar from "./NavBar";
 import Header from "./Header";
 import Goals from "./Goals";
 import styled from "styled-components";
-import Calendar from "./Calendar";
 import APICalendar from "./APICalendar";
 import ToDoList from "./ToDoList";
 
@@ -19,8 +18,8 @@ const Homepage = () => {
         </LeftContainer>
 
         <RightContainer>
-          {/* <Calendar /> */}
           <APICalendar />
+          
         </RightContainer>
       </MainContainer>
     </>
