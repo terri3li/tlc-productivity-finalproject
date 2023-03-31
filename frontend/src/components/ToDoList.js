@@ -57,8 +57,8 @@ const ToDoList = () => {
     const allDone = toDos.filter((toDo) => toDo.id === id);
     const completedTaskForProfile = allDone[0].toDo
 
-    setRecentTasks([{ id: Math.floor(Math.random() * 888888), completedTaskForProfile }, ...recentTasks]);
-    console.log(recentTasks)
+    // setRecentTasks([{ id: Math.floor(Math.random() * 888888), completedTaskForProfile }, ...recentTasks]);
+    // console.log(recentTasks)
     const deleteToDo = toDos.filter((toDo) => toDo.id !== id);
     setToDos([...deleteToDo]);
 

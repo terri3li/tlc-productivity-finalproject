@@ -9,12 +9,16 @@ import Calendar from "./Calendar";
 import ToDoList from "./ToDoList";
 
 const Homepage = () => {
-  const { user } = useContext(CurrentContext);
+  const { user, isAuthenticated } = useContext(CurrentContext);
 
   return (
     <>
       <Header />
 
+      {!isAuthenticated ? (
+          <></>
+        ) : (
+          <>
       <MainContainer>
         <LeftContainer>
           <Goals />
@@ -25,6 +29,9 @@ const Homepage = () => {
           <Calendar />
         </RightContainer>
       </MainContainer>
+          
+        </>
+        )}
     </>
   );
 };

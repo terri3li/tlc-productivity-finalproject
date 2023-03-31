@@ -35,15 +35,17 @@ const NavBar = () => {
   return (
     <>
       <NavContainer>
-        {!isAuthenticated ? (
-          <button onClick={() => loginWithRedirect()}>Log In || Sign Up</button>
-        ) : (
-          <ProfileLink to="/profile">Profile</ProfileLink>
-        )}
 
         <Clock>{currentTime}</Clock>
         <HomeLink to="/">Dashboard</HomeLink>
+        {!isAuthenticated ? (
+          <LoginButton onClick={() => loginWithRedirect()}>Log In || Sign Up</LoginButton>
+        ) : (
+          <>
+          <ProfileLink to="/profile">Profile</ProfileLink>
         <Logout />
+        </>
+        )}
       </NavContainer>
     </>
   );
@@ -63,6 +65,7 @@ const ProfileLink = styled(NavLink)`
   border: solid 1px;
   border-radius: 5px;
   padding: 5px 12px 5px 12px;
+
 `;
 
 const HomeLink = styled(NavLink)`
@@ -70,6 +73,13 @@ const HomeLink = styled(NavLink)`
   border: solid 1px;
   border-radius: 5px;
   padding: 5px 12px 5px 12px;
+`;
+
+const LoginButton = styled.button`
+border: solid 1px;
+  border-radius: 5px;
+  padding: 5px 12px 5px 12px;
+  font-size: 0.95em;
 `;
 
 const Clock = styled.div`

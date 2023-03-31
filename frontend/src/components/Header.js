@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { CurrentContext } from "../CurrentContext";
 
 const Header = () => {
+
+const {isAuthenticated} = useContext(CurrentContext);
+
   let date = new Date();
   let hour = date.getHours();
   let min = date.getMinutes();
@@ -19,7 +22,15 @@ const Header = () => {
 
   return (
     <>
-      <Greeting>Good {timeOfDay}, firstName</Greeting>
+
+{!isAuthenticated ? (
+          <Greeting>Good {timeOfDay}, you should sign up with us</Greeting>
+        ) : (
+          <>
+          <Greeting>* Good {timeOfDay}, Terri *</Greeting>
+        </>
+        )}
+      
     </>
   );
 };
