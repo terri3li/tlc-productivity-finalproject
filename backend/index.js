@@ -16,7 +16,7 @@ OAuth2Client.setCredentials({
 
 const calendar = google.calendar({version: 'v3', auth: OAuth2Client })
 
-const port = 8880;
+const port = 5678;
 
 const { addUser, checkForUser } = require("./handlers");
 
@@ -28,7 +28,7 @@ express()
   // probably won't need
   .use(express.static("public"))
 
-  .get("/get-user/:userUsername", checkForUser)
+  .get("/get-user/:userNickname", checkForUser)
   .post("/new-user", addUser)
 
   // catch all

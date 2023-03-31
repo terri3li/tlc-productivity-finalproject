@@ -15,12 +15,12 @@ const options = {
 
 const checkForUser = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
-  const userUserame = req.params.userUsername;
-console.log(userUserame)
+  const username = req.params.nickname;
+console.log(username)
   try {
     await client.connect();
     const db = client.db("ToDo-List");
-    const findUser = await db.collection("users").findOne({_id: userUsername});
+    const findUser = await db.collection("users").findOne({_id: username});
 
     //if user exists return user info
     if (findUser) {

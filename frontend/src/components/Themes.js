@@ -6,10 +6,10 @@ export const lightTheme = {
   header: '#f1f1f1'
 };
 export const darkTheme = {
-  body: '#121620',
+  body: '#1C2833',
   text: '#f1f1f1',
-  border: 'solid 1px #575656',
-  header: '#121620'
+  border: 'solid 1px #F9FF9D',
+  header: '#273746'
 };
 export const dustySunrise = {
   body: '#C06C84',
