@@ -6,6 +6,7 @@ export const CurrentContext = createContext(null);
 
 const CurrentProvider = ({ children }) => {
   const [theme, setTheme] = useState("light");
+  const [recentTasks, setRecentTasks] = useState([]);
   const [tasksCompleted, setTasksCompleted] = useState(0);
   const { user, isAuthenticated, isLoading } = useAuth0();
   const [mounted, setMounted] = useState(null);
@@ -33,7 +34,7 @@ useEffect(() => {
 
   return (
     <>
-      <CurrentContext.Provider value={{ user, isAuthenticated, currentTime, theme, setTheme, tasksCompleted, setTasksCompleted }}>
+      <CurrentContext.Provider value={{ recentTasks, setRecentTasks, user, isAuthenticated, currentTime, theme, setTheme, tasksCompleted, setTasksCompleted }}>
         {children}
       </CurrentContext.Provider>
     </>

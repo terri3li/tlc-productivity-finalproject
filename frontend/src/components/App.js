@@ -4,30 +4,29 @@ import GlobalStyles from "./GlobalStyles";
 import CurrentProvider from "../CurrentContext";
 import { ThemeProvider } from "styled-components";
 //component imports
-import { lightTheme, darkTheme } from "./Themes";
+import { lightTheme, darkTheme, dustySunrise } from "./Themes";
 import Homepage from "./Homepage";
 import Settings from "./Settings";
 import SignUp from "./SignUp";
 import Profile from "./Profile";
+import NavBar from "./NavBar";
 
 
 const App = () => {
-  const [theme, setTheme] = useState("light");
-  const themeToggler = () => {
-    theme === "light" ? setTheme("dark") : setTheme("light");
-  };
+  const [theme, setTheme] = useState(lightTheme);
 
   return (
     <CurrentProvider>
       <BrowserRouter>
 
-        <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+        <ThemeProvider theme={theme}>
+         
           <GlobalStyles />
       
-
+<NavBar/>
           <Routes>
             <Route path="/" element={<Homepage />} />
-            <Route path="/settings" element={<Settings theme={theme} setTheme={setTheme} themeToggler={themeToggler}/>} />
+            <Route path="/settings" element={<Settings theme={theme} setTheme={setTheme} />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>

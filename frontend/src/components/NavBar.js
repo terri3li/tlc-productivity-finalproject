@@ -7,7 +7,7 @@ import { CurrentContext } from "../CurrentContext";
 import Logout from "./Logout";
 
 const NavBar = () => {
-  const {isAuthenticated} = useContext(CurrentContext);
+  const { isAuthenticated } = useContext(CurrentContext);
   const [currentTime, setCurrentTime] = useState();
   const navigate = useNavigate();
   const { loginWithRedirect } = useAuth0();
@@ -32,7 +32,6 @@ const NavBar = () => {
   };
   setInterval(clock, 1000);
 
-
   return (
     <>
       <NavContainer>
@@ -42,10 +41,9 @@ const NavBar = () => {
           <ProfileLink to="/profile">Profile</ProfileLink>
         )}
 
-        <h3>{currentTime}</h3>
-        {/* <button>Treat Yourself</button> */}
-        <h3>Dashboard</h3>
-        <Logout/>
+        <Clock>{currentTime}</Clock>
+        <HomeLink to="/">Dashboard</HomeLink>
+        <Logout />
       </NavContainer>
     </>
   );
@@ -53,11 +51,32 @@ const NavBar = () => {
 
 const NavContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 3vh;
+  padding-bottom: 3vh;
+  border-bottom: solid 2px;
 `;
 
 const ProfileLink = styled(NavLink)`
+  text-decoration: none;
+  border: solid 1px;
+  border-radius: 5px;
+  padding: 5px 12px 5px 12px;
+`;
 
+const HomeLink = styled(NavLink)`
+  text-decoration: none;
+  border: solid 1px;
+  border-radius: 5px;
+  padding: 5px 12px 5px 12px;
+`;
+
+const Clock = styled.div`
+  font-weight: bold;
+  border: solid 1px;
+  border-radius: 5px;
+  padding: 5px 12px 5px 12px;
 `;
 
 export default NavBar;

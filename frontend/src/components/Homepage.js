@@ -1,7 +1,7 @@
 import { useContext } from "react";
 //import components
 import { CurrentContext } from "../CurrentContext";
-import NavBar from "./NavBar";
+
 import Header from "./Header";
 import Goals from "./Goals";
 import styled from "styled-components";
@@ -9,12 +9,10 @@ import Calendar from "./Calendar";
 import ToDoList from "./ToDoList";
 
 const Homepage = () => {
-
   const { user } = useContext(CurrentContext);
 
   return (
     <>
-      <NavBar />
       <Header />
 
       <MainContainer>
@@ -25,7 +23,6 @@ const Homepage = () => {
 
         <RightContainer>
           <Calendar />
-          
         </RightContainer>
       </MainContainer>
     </>

@@ -8,10 +8,9 @@ const ToDoList = () => {
   const [editToDo, setEditToDo] = useState(0);
   const [userReward, setUserReward] = useState("");
   const [reward, setReward] = useState("");
-  const { tasksCompleted, setTasksCompleted } = useContext(CurrentContext);
+  const { tasksCompleted, setTasksCompleted, recentTasks, setRecentTasks } = useContext(CurrentContext);
   let itemReward = "";
-  const [toggleReward, setToggleReward] = useState(false)
- 
+  const [toggleReward, setToggleReward] = useState(false);
 
   //prevent refresh, submit new to do item
   const handleSubmit = (e) => {
@@ -55,13 +54,18 @@ const ToDoList = () => {
 
   const handleComplete = (id) => {
     setTasksCompleted(tasksCompleted + 1);
+    const allDone = toDos.filter((toDo) => toDo.id === id);
+    const completedTaskForProfile = allDone[0].toDo
+
+    setRecentTasks([{ id: Math.floor(Math.random() * 888888), completedTaskForProfile }, ...recentTasks]);
+    console.log(recentTasks)
     const deleteToDo = toDos.filter((toDo) => toDo.id !== id);
     setToDos([...deleteToDo]);
+
+    
+   
   };
 
-  // const handleReward = (id) => {
-  //   setToggleReward(true)
-  // }
 
   const updateToDo = (e) => {
     setToDo(e.target.value);
@@ -87,11 +91,7 @@ const ToDoList = () => {
             placeholder="Enter completion reward here (optional)"
             value={userReward}
             onChange={updateReward}
-            // style={{
-            //   visibility: toggleReward ? "visible" : "hidden",
-            // }}
           />
-          {/* <RewardButton onClick={() => addReward()}>Treat Myself</RewardButton> */}
         </RewardContainer>
         <button type="submit">{editToDo ? "Edit" : "Enter"}</button>
       </ToDoForm>
@@ -126,11 +126,6 @@ const ToDoList = () => {
               >
                 complete
               </button>
-
-          
-              {/* <button onClick={() => {
-                  handleReward(item.id);
-                }}>reward</button> */}
             </li>
           );
         })}
@@ -155,7 +150,7 @@ const ToDoInput = styled.input`
 `;
 
 const RewardInput = styled.input`
-/* visibility: hidden; */
+  /* visibility: hidden; */
   width: 400px;
 `;
 
