@@ -11,6 +11,43 @@ const options = {
   useUnifiedTopology: true,
 };
 
+//------ check to see if user already exists
+
+const checkForUser = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const userUserame = req.params.userUsername;
+console.log(userUserame)
+  try {
+    await client.connect();
+    const db = client.db("ToDo-List");
+    const findUser = await db.collection("users").findOne({_id: userUsername});
+
+    //if user exists return user info
+    if (findUser) {
+      client.close();
+      res.status(200).json({
+        status: 200,
+        data: findUser,
+        message: "User already exists",
+      });
+    }
+    //if user doesn't exist then re-route to add them
+    else {
+      res.status(404).json({
+        status: 404,
+        message: "Need to add user",
+      });
+    }
+  } catch {
+    res.status(400).json({
+      status: 400,
+      message: "Something went wrong",
+    });
+  }
+};
+
+//// ---- below is working in insomnia, need to get data from above in here 
+
 const addUser = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
 
@@ -22,26 +59,18 @@ const addUser = async (req, res) => {
       _id: uuidv4(),
       username: "",
       email: "",
-      toDo: []
+      toDo: [],
     };
 
     await db.collection("users").insertOne(newUser);
 
-    if (updatedResult.matchedCount === 0) {
-      return res.status(404).json({ status: 404 });
-    } else if (updatedResult.modifiedCount === 0) {
-      return res.status(409).json({ status: 409 });
-    } else if (
-      updatedResult.matchedCount === 1 &&
-      updatedResult.modifiedCount === 1
-    ) {
-      client.close();
-      res.status(201).json({
-        status: 201,
-        message: "Reservation complete!",
-      });
-    }
-  } catch (error) {
+    client.close();
+    res.status(201).json({
+      status: 201,
+      message: "New user added!",
+    });
+  } catch (e) {
+    console.log(e);
     res.status(400).json({
       status: 400,
       message: "Something went wrong",
@@ -51,4 +80,5 @@ const addUser = async (req, res) => {
 
 module.exports = {
   addUser,
+  checkForUser,
 };

@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const port = 8880;
 
 const {
- addUser
+ addUser, checkForUser
 } = require("./handlers");
 
 express()
@@ -16,6 +16,7 @@ express()
   // probably won't need
   .use(express.static("public"))
 
+  .get("/get-user/:userUsername", checkForUser)
   .post("/new-user", addUser)
 
   // catch all

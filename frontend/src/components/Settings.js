@@ -1,9 +1,13 @@
+import { useState } from "react";
 import styled from "styled-components";
 
-const Settings = () => {
+
+const Settings = ({themeToggler}) => {
 
 	return (
 		<>
+		
+		<button onClick={themeToggler}>Switch Theme</button>
 		<div>Select Site Theme:</div>
 		<div>Light</div>
 		<div>Dark</div>

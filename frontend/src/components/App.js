@@ -7,8 +7,9 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "./Themes";
 import Homepage from "./Homepage";
 import Settings from "./Settings";
-import Login from "./Login";
 import SignUp from "./SignUp";
+import Profile from "./Profile";
+
 
 const App = () => {
   const [theme, setTheme] = useState("light");
@@ -22,13 +23,13 @@ const App = () => {
 
         <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
           <GlobalStyles />
-          <button onClick={themeToggler}>Switch Theme</button>
+      
 
           <Routes>
             <Route path="/" element={<Homepage />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/settings" element={<Settings theme={theme} setTheme={setTheme} themeToggler={themeToggler}/>} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
 
         </ThemeProvider>

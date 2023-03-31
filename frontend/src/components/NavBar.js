@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { CurrentContext } from "../CurrentContext";
@@ -9,6 +10,7 @@ const NavBar = () => {
   const {isAuthenticated} = useContext(CurrentContext);
   const [currentTime, setCurrentTime] = useState();
   const navigate = useNavigate();
+  const { loginWithRedirect } = useAuth0();
 
   const clock = () => {
     let date = new Date();
@@ -30,22 +32,19 @@ const NavBar = () => {
   };
   setInterval(clock, 1000);
 
-const Login = (e) => {
-  navigate("/login")
-}
 
   return (
     <>
       <NavContainer>
         {!isAuthenticated ? (
-          <button onClick={Login}>Log In || Sign Up</button>
+          <button onClick={() => loginWithRedirect()}>Log In || Sign Up</button>
         ) : (
-          <button>Profile</button>
+          <ProfileLink to="/profile">Profile</ProfileLink>
         )}
 
         <h3>{currentTime}</h3>
         {/* <button>Treat Yourself</button> */}
-        <h3>***</h3>
+        <h3>Dashboard</h3>
         <Logout/>
       </NavContainer>
     </>
@@ -55,6 +54,10 @@ const Login = (e) => {
 const NavContainer = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const ProfileLink = styled(NavLink)`
+
 `;
 
 export default NavBar;

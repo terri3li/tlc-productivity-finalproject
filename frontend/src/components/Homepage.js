@@ -1,11 +1,17 @@
+import { useContext } from "react";
+//import components
+import { CurrentContext } from "../CurrentContext";
 import NavBar from "./NavBar";
 import Header from "./Header";
 import Goals from "./Goals";
 import styled from "styled-components";
-import APICalendar from "./APICalendar";
+import Calendar from "./Calendar";
 import ToDoList from "./ToDoList";
 
 const Homepage = () => {
+
+  const { user } = useContext(CurrentContext);
+
   return (
     <>
       <NavBar />
@@ -18,7 +24,7 @@ const Homepage = () => {
         </LeftContainer>
 
         <RightContainer>
-          <APICalendar />
+          <Calendar />
           
         </RightContainer>
       </MainContainer>
