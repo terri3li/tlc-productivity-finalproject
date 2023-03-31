@@ -13,7 +13,7 @@ const Logout = () => {
 };
 
 const LogOutButton = styled.button`
-border: solid 1px; 
+/* border: solid 1px;  */
 border-radius: 5px;
 padding: 5px 12px 5px 12px;
 font-size: 0.95em;

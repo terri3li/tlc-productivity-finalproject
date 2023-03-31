@@ -57,12 +57,12 @@ const NavContainer = styled.div`
   align-items: center;
   margin-top: 3vh;
   padding-bottom: 3vh;
-  border-bottom: solid 2px;
+  /* border-bottom: solid 2px; */
 `;
 
 const ProfileLink = styled(NavLink)`
   text-decoration: none;
-  border: solid 1px;
+  /* border: solid 1px; */
   border-radius: 5px;
   padding: 5px 12px 5px 12px;
 
@@ -70,13 +70,13 @@ const ProfileLink = styled(NavLink)`
 
 const HomeLink = styled(NavLink)`
   text-decoration: none;
-  border: solid 1px;
+  /* border: solid 1px; */
   border-radius: 5px;
   padding: 5px 12px 5px 12px;
 `;
 
 const LoginButton = styled.button`
-border: solid 1px;
+/* border: solid 1px; */
   border-radius: 5px;
   padding: 5px 12px 5px 12px;
   font-size: 0.95em;
@@ -84,7 +84,7 @@ border: solid 1px;
 
 const Clock = styled.div`
   font-weight: bold;
-  border: solid 1px;
+  border: ${({ theme }) => theme.border};
   border-radius: 5px;
   padding: 5px 12px 5px 12px;
 `;

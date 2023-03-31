@@ -36,9 +36,10 @@ const {isAuthenticated} = useContext(CurrentContext);
 };
 
 const Greeting = styled.h1`
-  font-size: 3em;
-  font-family: cedarville-cursive;
+  font-size: 2.5em;
+  /* font-family: cedarville-cursive; */
   text-align: center;
+  /* background: ${({ theme }) => theme.header}; */
 `;
 
 export default Header;

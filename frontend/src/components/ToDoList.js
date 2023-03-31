@@ -62,8 +62,8 @@ const ToDoList = () => {
     const deleteToDo = toDos.filter((toDo) => toDo.id !== id);
     setToDos([...deleteToDo]);
 
+
     
-   
   };
 
 
