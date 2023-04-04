@@ -4,7 +4,8 @@ import { CurrentContext } from "../CurrentContext";
 
 const Header = () => {
 
-const {isAuthenticated} = useContext(CurrentContext);
+const {user, isAuthenticated} = useContext(CurrentContext);
+
 
   let date = new Date();
   let hour = date.getHours();
@@ -24,10 +25,10 @@ const {isAuthenticated} = useContext(CurrentContext);
     <>
 
 {!isAuthenticated ? (
-          <Greeting>Good {timeOfDay}, you should sign up with us</Greeting>
+          <Greeting>Good {timeOfDay}, sign in to get productive with us</Greeting>
         ) : (
           <>
-          <Greeting>* Good {timeOfDay}, Terri *</Greeting>
+          <Greeting> Good {timeOfDay}, Terri </Greeting>
         </>
         )}
       
@@ -39,7 +40,10 @@ const Greeting = styled.h1`
   font-size: 2.5em;
   /* font-family: cedarville-cursive; */
   text-align: center;
-  /* background: ${({ theme }) => theme.header}; */
+padding: 12px;
+width: 65vw;
+border-radius: 10px;
+
 `;
 
 export default Header;

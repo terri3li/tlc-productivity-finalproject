@@ -11,16 +11,16 @@ const options = {
   useUnifiedTopology: true,
 };
 
-//------ check to see if user already exists
+////---- check for user & GET info/status
 
 const checkForUser = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
-  const username = req.params.nickname;
-console.log(username)
+  const email = req.params.userEmail;
+
   try {
     await client.connect();
     const db = client.db("ToDo-List");
-    const findUser = await db.collection("users").findOne({_id: username});
+    const findUser = await db.collection("users").findOne({ email: email });
 
     //if user exists return user info
     if (findUser) {
@@ -33,8 +33,8 @@ console.log(username)
     }
     //if user doesn't exist then re-route to add them
     else {
-      res.status(404).json({
-        status: 404,
+      res.status(200).json({
+        status: 200,
         message: "Need to add user",
       });
     }
@@ -46,7 +46,7 @@ console.log(username)
   }
 };
 
-//// ---- below is working in insomnia, need to get data from above in here 
+//// ---- POST add new user
 
 const addUser = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
@@ -57,9 +57,13 @@ const addUser = async (req, res) => {
 
     const newUser = {
       _id: uuidv4(),
-      username: "",
-      email: "",
-      toDo: [],
+      username: req.body.username,
+      email: req.body.email,
+      toDo: req.body.toDo,
+      rewards: req.body.rewards,
+      tasksCompleted: req.body.tasksCompleted,
+      weeklysCompleted: req.body.weeklysCompleted,
+      monthlysCompleted: req.body.monthlysCompleted
     };
 
     await db.collection("users").insertOne(newUser);
@@ -68,6 +72,7 @@ const addUser = async (req, res) => {
     res.status(201).json({
       status: 201,
       message: "New user added!",
+      data: newUser,
     });
   } catch (e) {
     console.log(e);
@@ -78,7 +83,85 @@ const addUser = async (req, res) => {
   }
 };
 
+////---- PATCH user; update user rewards
+
+const updateRewards = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const email = req.params.userEmail;
+
+  try {
+    await client.connect();
+    const db = client.db("ToDo-List");
+    const findUser = await db.collection("users").findOne({ email: email });
+    console.log(findUser);
+
+    const updateUser = {
+      $set: {
+        rewards: req.body.rewards,
+      },
+    };
+
+    const updatedUser = await db
+      .collection("users")
+      .updateOne(findUser, updateUser);
+
+    client.close();
+    res.status(201).json({
+      status: 201,
+      message: "User Updated!",
+      data: updatedUser,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({
+      status: 400,
+      message: "Something went wrong",
+    });
+  }
+};
+
+////---- PATCH user; update user to dos
+
+const updateToDos = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const email = req.params.userEmail;
+
+  try {
+    await client.connect();
+    const db = client.db("ToDo-List");
+    const findUser = await db.collection("users").findOne({ email: email });
+
+    const updateUser = {
+      $set: {
+        toDo: req.body.toDo,
+        
+      },
+    };
+
+    const updatedList = await db
+      .collection("users")
+      .updateOne(findUser, updateUser);
+
+    client.close();
+    res.status(201).json({
+      status: 201,
+      message: "User Updated!",
+      data: updatedList,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({
+      status: 400,
+      message: "Something went wrong",
+    });
+  }
+};
+
+///////////////////
+
 module.exports = {
   addUser,
   checkForUser,
+  updateRewards,
+  updateToDos
 };

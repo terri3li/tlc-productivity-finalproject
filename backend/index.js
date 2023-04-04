@@ -18,7 +18,7 @@ const calendar = google.calendar({version: 'v3', auth: OAuth2Client })
 
 const port = 5678;
 
-const { addUser, checkForUser } = require("./handlers");
+const { addUser, checkForUser, updateRewards, updateToDos } = require("./handlers");
 
 express()
   .use(morgan("tiny"))
@@ -28,9 +28,12 @@ express()
   // probably won't need
   .use(express.static("public"))
 
-  .get("/get-user/:userNickname", checkForUser)
+  .get("/get-user/:userEmail", checkForUser)
   .post("/new-user", addUser)
+  .patch("/get-user/rewards/:userEmail", updateRewards)
+  .patch("/get-user/toDos/:userEmail", updateToDos)
 
+ 
   // catch all
   .get("*", (req, res) => {
     res.status(404).json({
@@ -39,5 +42,5 @@ express()
     });
   })
 
-  // Node spins up our server and sets it to listen on port 8000.
+
   .listen(port, () => console.log(`Listening on port ${port}`));

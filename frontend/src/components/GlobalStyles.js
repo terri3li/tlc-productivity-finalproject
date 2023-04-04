@@ -1,6 +1,9 @@
 import { createGlobalStyle} from "styled-components"
 export default createGlobalStyle`
 
+* {
+  border: ${({ theme }) => theme.border};
+}
   body, button {
     background: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.text};
@@ -8,10 +11,18 @@ export default createGlobalStyle`
     transition: all 0.10s linear;
   }
 
-  * {
-    border: ${({ theme }) => theme.border};
-  }
-  
+button {
+  cursor: pointer;
+}
+
+input {
+  background: ${({ theme }) => theme.header};
+  color: ${({ theme }) => theme.text};
+}
+
+input::placeholder {
+  color: ${({ theme }) => theme.text};
+}
   html, h2, h3, h4, body, div, form, span, ul {
     border: none
   }

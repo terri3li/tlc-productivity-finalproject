@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { FiHome } from "react-icons/fi";
+import { VscAccount } from "react-icons/vsc";
+import { HiOutlineSparkles } from "react-icons/hi2";
 import { CurrentContext } from "../CurrentContext";
 import Logout from "./Logout";
 
@@ -31,20 +34,31 @@ const NavBar = () => {
     return;
   };
   setInterval(clock, 1000);
+  clearInterval(1000);
 
   return (
     <>
       <NavContainer>
-
         <Clock>{currentTime}</Clock>
-        <HomeLink to="/">Dashboard</HomeLink>
+
         {!isAuthenticated ? (
-          <LoginButton onClick={() => loginWithRedirect()}>Log In || Sign Up</LoginButton>
+          <LoginButton onClick={() => loginWithRedirect()}>
+            Log In || Sign Up
+          </LoginButton>
         ) : (
           <>
-          <ProfileLink to="/profile">Profile</ProfileLink>
-        <Logout />
-        </>
+            <HomeLink
+              onClick={() => {
+                navigate("/");
+              }}
+            />
+            <ProfileLink
+              onClick={() => {
+                navigate("/profile");
+              }}
+            />
+            <Logout />
+          </>
         )}
       </NavContainer>
     </>
@@ -57,36 +71,31 @@ const NavContainer = styled.div`
   align-items: center;
   margin-top: 3vh;
   padding-bottom: 3vh;
-  /* border-bottom: solid 2px; */
 `;
 
-const ProfileLink = styled(NavLink)`
-  text-decoration: none;
-  /* border: solid 1px; */
-  border-radius: 5px;
-  padding: 5px 12px 5px 12px;
-
+const HomeLink = styled(FiHome)`
+  border: none;
+  width: 5vw;
+  height: 5vh;
+  cursor: pointer;
 `;
 
-const HomeLink = styled(NavLink)`
-  text-decoration: none;
-  /* border: solid 1px; */
-  border-radius: 5px;
-  padding: 5px 12px 5px 12px;
+const ProfileLink = styled(VscAccount)`
+  border: none;
+  width: 5vw;
+  height: 5vh;
+  cursor: pointer;
 `;
 
 const LoginButton = styled.button`
-/* border: solid 1px; */
   border-radius: 5px;
   padding: 5px 12px 5px 12px;
-  font-size: 0.95em;
+  font-size: 1em;
 `;
 
 const Clock = styled.div`
-  font-weight: bold;
-  border: ${({ theme }) => theme.border};
-  border-radius: 5px;
-  padding: 5px 12px 5px 12px;
+  border: none;
+  font-size: 1.3em;
 `;
 
 export default NavBar;

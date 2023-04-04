@@ -5,34 +5,40 @@ import { CurrentContext } from "../CurrentContext";
 import Header from "./Header";
 import Goals from "./Goals";
 import styled from "styled-components";
-import Calendar from "./Calendar";
+
 import ToDoList from "./ToDoList";
+import TreatYourself from "./TreatYourself";
+import HomeCalendar from "./Calendar";
+import WeeklyGoals from "./WeeklyGoals";
 
 const Homepage = () => {
   const { user, isAuthenticated } = useContext(CurrentContext);
 
   return (
-    <>
+    <PageContainer>
       <Header />
 
-      {!isAuthenticated ? (
-          <></>
-        ) : (
-          <>
-      <MainContainer>
-        <LeftContainer>
-          <Goals />
-          <ToDoList />
-        </LeftContainer>
+      <>
+        <MainContainer>
 
-        <RightContainer>
-          <Calendar />
-        </RightContainer>
-      </MainContainer>
-          
-        </>
-        )}
-    </>
+          <FirstContainer>
+            <Goals />
+            <WeeklyGoals/>
+          </FirstContainer>
+
+          <SecondContainer>
+            <ToDoList />
+          </SecondContainer>
+
+          <ThirdContainer>
+         
+            <TreatYourself />
+            <HomeCalendar />
+          </ThirdContainer>
+
+        </MainContainer>
+      </>
+    </PageContainer>
   );
 };
 
@@ -40,8 +46,17 @@ export default Homepage;
 
 const MainContainer = styled.div`
   display: flex;
+  gap: 3vw;
 `;
 
-const LeftContainer = styled.div``;
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
-const RightContainer = styled.div``;
+const FirstContainer = styled.div``;
+
+const SecondContainer = styled.div``;
+
+const ThirdContainer = styled.div``;

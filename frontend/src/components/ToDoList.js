@@ -1,16 +1,50 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { CurrentContext } from "../CurrentContext";
 
 const ToDoList = () => {
   const [toDo, setToDo] = useState("");
-  const [toDos, setToDos] = useState([]);
+  // const [toDos, setToDos] = useState([]);
   const [editToDo, setEditToDo] = useState(0);
-  const [userReward, setUserReward] = useState("");
-  const [reward, setReward] = useState("");
-  const { tasksCompleted, setTasksCompleted, recentTasks, setRecentTasks } = useContext(CurrentContext);
-  let itemReward = "";
-  const [toggleReward, setToggleReward] = useState(false);
+  const [mongoTrigger, setMongoTrigger] = useState(false);
+
+  const {
+    user,
+    isLoading,
+    tasksCompleted,
+    setTasksCompleted,
+    recentTasks,
+    setRecentTasks,
+    completed,
+    setCompleted,
+    mongoUser,
+    rewards,
+    toDos,
+    setToDos
+  } = useContext(CurrentContext);
+
+  //// PAtch update to dos
+
+  // useEffect(() => {
+  //   fetch(`/get-user/toDos/${user.email}`, {
+  //     method: "PATCH",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       toDo: [toDos],
+  //     }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log("to dos updated");
+  //       setMongoTrigger(false);
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     });
+  // }, [mongoTrigger]);
 
   //prevent refresh, submit new to do item
   const handleSubmit = (e) => {
@@ -28,16 +62,16 @@ const ToDoList = () => {
       setToDos(updatedToDos);
       setEditToDo(0);
       setToDo("");
+      setMongoTrigger(true);
+
       return;
     }
 
+    //logging one behind
     if (toDo !== "") {
-      setToDos([{ id: `${toDo}-${Date.now()}`, toDo, userReward }, ...toDos]);
+      setToDos([toDo, ...toDos]);
       setToDo("");
-    }
-
-    if (userReward !== "") {
-      setUserReward("");
+      setMongoTrigger(true);
     }
   };
 
@@ -53,26 +87,26 @@ const ToDoList = () => {
   };
 
   const handleComplete = (id) => {
+    //update user task completion count
     setTasksCompleted(tasksCompleted + 1);
-    const allDone = toDos.filter((toDo) => toDo.id === id);
-    const completedTaskForProfile = allDone[0].toDo
+    setCompleted(true);
 
-    // setRecentTasks([{ id: Math.floor(Math.random() * 888888), completedTaskForProfile }, ...recentTasks]);
-    // console.log(recentTasks)
+    //recentTasks is running one update behind
+    // console.log(recentTasks);
+    const allDone = toDos.filter((toDo) => toDo.id === id);
+    const completedTaskForProfile = allDone[0].toDo;
+    setRecentTasks([
+      { id: Math.floor(Math.random() * 888888), completedTaskForProfile },
+      ...recentTasks,
+    ]);
+
+    //delete after completed
     const deleteToDo = toDos.filter((toDo) => toDo.id !== id);
     setToDos([...deleteToDo]);
-
-
-    
   };
-
 
   const updateToDo = (e) => {
     setToDo(e.target.value);
-  };
-
-  const updateReward = (e) => {
-    setUserReward(e.target.value);
   };
 
   return (
@@ -81,18 +115,11 @@ const ToDoList = () => {
       <ToDoForm onSubmit={handleSubmit}>
         <ToDoInput
           type="text"
-          placeholder="Enter to do item here (required)"
+          placeholder="Enter to do item here"
           value={toDo}
           onChange={updateToDo}
         />
-        <RewardContainer>
-          <RewardInput
-            type="text"
-            placeholder="Enter completion reward here (optional)"
-            value={userReward}
-            onChange={updateReward}
-          />
-        </RewardContainer>
+
         <button type="submit">{editToDo ? "Edit" : "Enter"}</button>
       </ToDoForm>
 
@@ -102,8 +129,7 @@ const ToDoList = () => {
         {toDos.map((item) => {
           return (
             <li key={item.id}>
-              <ToDoItem>To Do: {item.toDo}</ToDoItem>
-              <div>{item.userReward}</div>
+              <ToDoItem>To Do: {item}</ToDoItem>
               <button
                 onClick={() => {
                   handleEdit(item.id);
@@ -148,16 +174,5 @@ const ToDoForm = styled.form`
 const ToDoInput = styled.input`
   width: 400px;
 `;
-
-const RewardInput = styled.input`
-  /* visibility: hidden; */
-  width: 400px;
-`;
-
-const RewardContainer = styled.span`
-  display: inline-flex;
-`;
-
-const RewardButton = styled.button``;
 
 export default ToDoList;

@@ -1,34 +1,43 @@
 import { createContext, useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import { useAuth0 } from "@auth0/auth0-react";
+import { FiLoader } from "react-icons/fi";
+import styled, { keyframes } from "styled-components";
 
 export const CurrentContext = createContext(null);
 
 const CurrentProvider = ({ children }) => {
-  //sets style theme for site
-  const [theme, setTheme] = useState("");
-  //keeps track of the amount of tasks completed 
+  //keeps track of the amount of tasks completed
   const [tasksCompleted, setTasksCompleted] = useState(0);
-  const [recentTasks, setRecentTasks] = useState([]);
+  const [weeklysCompleted, setWeeklysCompleted] = useState(0);
+  const [monthlysCompleted, setMonthlysCompleted] = useState(0);
+  const [toDos, setToDos] = useState([]);
 
+  const [recentTasks, setRecentTasks] = useState([]);
+  const [completed, setCompleted] = useState(false);
+  //below is used to set up & link auth0 to mongodb
+  const [userStatusResponse, setUserStatusResponse] = useState();
+  const [mongoUser, setMongoUser] = useState({}); 
   const { user, isAuthenticated, isLoading } = useAuth0();
   const [mounted, setMounted] = useState(null);
+  const [rewards, setRewards] = useState(["Snack time"]);
+
+  //not sure i'll need the time here, check later
   const currentTime = format(new Date(), "HH:mm a").toLowerCase();
-  
+
   useEffect(() => {
     if (isAuthenticated) {
-      console.log("hit")
-      setMounted(true)
+      setMounted(true);
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (mounted) {
-      console.log(user.nickname);
-      fetch(`/get-user/${user.nickname}`)
+      fetch(`/get-user/${user.email}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          setUserStatusResponse(data.message);
+          setMongoUser(data);
           setMounted(false);
         })
         .catch((error) => {
@@ -37,8 +46,56 @@ const CurrentProvider = ({ children }) => {
     }
   }, [mounted]);
 
+  useEffect(() => {
+    if (userStatusResponse === "Need to add user" || completed) {
+      fetch("/new-user", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: user.nickname,
+          email: user.email,
+          avatar: user.picture,
+          toDo: [],
+          rewards: [rewards],
+          tasksCompleted: tasksCompleted,
+          weeklysCompleted: weeklysCompleted,
+          monthlysCompleted, monthlysCompleted
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          window.localStorage.setItem(
+            "loggedInUser",
+            JSON.stringify(data.data)
+            );
+            setMongoUser(data); 
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
+      //not sure localstorage is needed anymore, leaving for now 
+      if (isAuthenticated) {
+        fetch(`/get-user/${user.email}`)
+          .then((res) => res.json())
+          .then((data) => {
+            window.localStorage.setItem(
+              "loggedInUser",
+              JSON.stringify(data.data)
+            );
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
+    }
+  }, [userStatusResponse, completed]);
+
   if (isLoading) {
-    return <div>Loading ...</div>;
+    return <Spinner size={90} />;
   }
 
   return (
@@ -48,12 +105,18 @@ const CurrentProvider = ({ children }) => {
           recentTasks,
           setRecentTasks,
           user,
-          isAuthenticated,
           currentTime,
-          theme,
-          setTheme,
           tasksCompleted,
           setTasksCompleted,
+          completed,
+          setCompleted,
+          rewards,
+          setRewards,
+          isAuthenticated,
+          mongoUser,
+          isLoading,
+          toDos,
+          setToDos,
         }}
       >
         {children}
@@ -61,5 +124,19 @@ const CurrentProvider = ({ children }) => {
     </>
   );
 };
+
+const spin = keyframes`
+from {
+  transform: rotate(0deg);
+}
+to {
+  transform: rotate(360deg);
+}
+`;
+
+const Spinner = styled(FiLoader)`
+  animation: ${spin} 2s linear infinite;
+  margin: 5% 0 0 47%;
+`;
 
 export default CurrentProvider;
