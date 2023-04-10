@@ -1,16 +1,15 @@
 import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { CurrentContext } from "../CurrentContext";
+import Loading from "./Loading"
 
 const ToDoList = () => {
   const [toDo, setToDo] = useState("");
-  // const [toDos, setToDos] = useState([]);
   const [editToDo, setEditToDo] = useState(0);
   const [mongoTrigger, setMongoTrigger] = useState(false);
 
   const {
     user,
-    isLoading,
     tasksCompleted,
     setTasksCompleted,
     recentTasks,
@@ -18,14 +17,13 @@ const ToDoList = () => {
     completed,
     setCompleted,
     mongoUser,
-    rewards,
     toDos,
-    setToDos
+    setToDos,
   } = useContext(CurrentContext);
 
-  //// PAtch update to dos
-
   // useEffect(() => {
+
+  //   if (mongoTrigger) {
   //   fetch(`/get-user/toDos/${user.email}`, {
   //     method: "PATCH",
   //     headers: {
@@ -44,9 +42,11 @@ const ToDoList = () => {
   //     .catch((e) => {
   //       console.log(e);
   //     });
+  //   }
   // }, [mongoTrigger]);
 
-  //prevent refresh, submit new to do item
+  ////------- SUBMIT
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -69,11 +69,13 @@ const ToDoList = () => {
 
     //logging one behind
     if (toDo !== "") {
-      setToDos([toDo, ...toDos]);
+      setToDos([{id: Math.floor(Math.random() * 8888888), toDo}, ...toDos]);
       setToDo("");
       setMongoTrigger(true);
     }
   };
+
+  ////------- EDIT
 
   const handleEdit = (id) => {
     const edit = toDos.find((item) => item.id === id);
@@ -81,37 +83,57 @@ const ToDoList = () => {
     setEditToDo(id);
   };
 
+  ////------ DELETE
+
   const handleDelete = (id) => {
     const deleteToDo = toDos.filter((toDo) => toDo.id !== id);
     setToDos([...deleteToDo]);
   };
+  
+////------- COMPLETE
 
   const handleComplete = (id) => {
-    //update user task completion count
-    setTasksCompleted(tasksCompleted + 1);
-    setCompleted(true);
+  
+    const tasksCompletedForPatch = tasksCompleted + 1;
+  
+    
+    fetch(`/get-user/tasks-completed/${user.email}`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tasksCompleted: tasksCompletedForPatch,
+      }),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        setTasksCompleted(tasksCompleted + 1);
+        setCompleted(true);
+        console.log("task updated");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
 
-    //recentTasks is running one update behind
-    // console.log(recentTasks);
-    const allDone = toDos.filter((toDo) => toDo.id === id);
-    const completedTaskForProfile = allDone[0].toDo;
-    setRecentTasks([
-      { id: Math.floor(Math.random() * 888888), completedTaskForProfile },
-      ...recentTasks,
-    ]);
-
-    //delete after completed
     const deleteToDo = toDos.filter((toDo) => toDo.id !== id);
     setToDos([...deleteToDo]);
   };
+
+  ////------ UPDATE
 
   const updateToDo = (e) => {
     setToDo(e.target.value);
   };
 
+ 
+   
+
   return (
-    <>
-      <h2>To Do List</h2>
+    <ToDoContainer>
+    
+      <Title>To Do List</Title>
       <ToDoForm onSubmit={handleSubmit}>
         <ToDoInput
           type="text"
@@ -127,9 +149,10 @@ const ToDoList = () => {
 
       <ul>
         {toDos.map((item) => {
-          return (
+         return (
             <li key={item.id}>
-              <ToDoItem>To Do: {item}</ToDoItem>
+            
+              <ToDoItem key={item.id}>To Do: {item.toDo}</ToDoItem>
               <button
                 onClick={() => {
                   handleEdit(item.id);
@@ -156,13 +179,19 @@ const ToDoList = () => {
           );
         })}
       </ul>
-    </>
+    </ToDoContainer>
   );
 };
 
-// const ToDoListItem = styled.ul`
-// list-style-type: none;
-// `;
+const ToDoContainer = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+`;
+
+const Title = styled.h2`
+text-decoration: underline;
+`;
 
 const ToDoItem = styled.span``;
 

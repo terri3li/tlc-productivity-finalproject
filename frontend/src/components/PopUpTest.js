@@ -1,6 +1,10 @@
 import Popup from 'reactjs-popup';
+import styled from 'styled-components';
 
 const PopUpTest = () => {
+
+    // document.body.style.opacity = 0.5
+
     return (
       <div>
           <Popup trigger=
@@ -8,7 +12,8 @@ const PopUpTest = () => {
               modal nested>
               {
                   close => (
-                      <div>
+                      <PopUpContainer>
+                        
                           <div>
                               Instructions
                           </div>
@@ -18,12 +23,16 @@ const PopUpTest = () => {
                                       Close
                               </button>
                           </div>
-                      </div>
+                      </PopUpContainer>
                   )
               }
           </Popup>
       </div>
   )
 };
+
+const PopUpContainer = styled.div`
+border: ${({ theme }) => theme.border};
+`;
 
 export default PopUpTest;

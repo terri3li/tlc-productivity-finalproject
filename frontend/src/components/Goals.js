@@ -3,6 +3,7 @@ import { CurrentContext } from "../CurrentContext";
 import { setDay } from "date-fns";
 import styled from "styled-components";
 import { format } from "date-fns";
+import PopUpTest from "./PopUpTest";
 
 const Goals = () => {
   const [daysLeftMonth, setDaysLeftMonth] = useState(0);
@@ -92,18 +93,10 @@ const Goals = () => {
 
   return (
     <GoalContainer>
-      {/* <WeeklyContainer>
-        <WeeklyHeader>
-          <h2>
-            goal for the week of sunday,{" "}
-            {whichMonth[month].toLowerCase() + " " + sundayDate}:{" "}
-          </h2>
-          <WeeklyDays> days left to complete: {}</WeeklyDays>
-        </WeeklyHeader>
-        {setWeekly()}
-      </WeeklyContainer> */}
+   
 
       <MonthlyContainer>
+        <PopUpTest/>
         <MonthlyHeader>
           <h2>your {whichMonth[month].toLowerCase() + " " + year} goal:</h2>
           <MonthlyDays>days: left to complete: {daysLeftMonth}</MonthlyDays>

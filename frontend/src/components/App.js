@@ -24,7 +24,7 @@ const App = () => {
           <GlobalStyles />
 
           <NavBar />
-          <PopUpTest />
+         
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route

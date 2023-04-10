@@ -63,7 +63,9 @@ const addUser = async (req, res) => {
       rewards: req.body.rewards,
       tasksCompleted: req.body.tasksCompleted,
       weeklysCompleted: req.body.weeklysCompleted,
-      monthlysCompleted: req.body.monthlysCompleted
+      monthlysCompleted: req.body.monthlysCompleted,
+      points: req.body.points,
+      level: req.body.level,
     };
 
     await db.collection("users").insertOne(newUser);
@@ -134,7 +136,42 @@ const updateToDos = async (req, res) => {
     const updateUser = {
       $set: {
         toDo: req.body.toDo,
-        
+      },
+    };
+
+    const updatedList = await db
+      .collection("users")
+      .updateOne(findUser, updateUser);
+
+    client.close();
+    res.status(201).json({
+      status: 201,
+      message: "User Updated!",
+      data: updatedList,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({
+      status: 400,
+      message: "Something went wrong",
+    });
+  }
+};
+
+//---- PATCH user; update user tasks completed
+
+const updateTasks = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const email = req.params.userEmail;
+
+  try {
+    await client.connect();
+    const db = client.db("ToDo-List");
+    const findUser = await db.collection("users").findOne({ email: email });
+
+    const updateUser = {
+      $set: {
+        tasksCompleted: req.body.tasksCompleted,
       },
     };
 
@@ -163,5 +200,6 @@ module.exports = {
   addUser,
   checkForUser,
   updateRewards,
-  updateToDos
+  updateToDos,
+  updateTasks,
 };

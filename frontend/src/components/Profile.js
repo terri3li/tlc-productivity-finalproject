@@ -1,130 +1,204 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import {
   AiOutlineCalendar,
   AiOutlineCheckCircle,
-  AiOutlineCoffee,
+  AiOutlineCoffee
 } from "react-icons/ai";
-import {CurrentContext} from "../CurrentContext";
-// import Patch from "./Patch";
+import {  CgGirl } from "react-icons/cg"
+import Loading from "./Loading";
+import { CurrentContext } from "../CurrentContext";
 
 const Profile = () => {
   const [reward, setReward] = useState("");
   const navigate = useNavigate();
-  
-  const { rewards, setRewards, user, mongoUser } = useContext(CurrentContext);
+
+  const {
+    rewards,
+    setRewards,
+    points,
+    setPoints,
+    level,
+    setLevel,
+    user,
+    tasksCompleted,
+    weeklysCompleted,
+    monthlysCompleted,
+    mongoUser,
+  } = useContext(CurrentContext);
 
   const handleClick = (e) => {
     navigate("/settings");
   };
 
   const handleSubmit = (e) => {
-e.preventDefault();
-if (reward !== "" ) {
-  setRewards([reward, ...rewards]);
-  setReward("");
+    e.preventDefault();
+    if (reward !== "") {
+      const newRewards = [reward, ...rewards];
 
-  
-  fetch(`/get-user/rewards/${user.email}`, {
-    method: "PATCH",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-        rewards: [rewards],
-    }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-   console.log("rewards updated")
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-
-  } 
-}
+      fetch(`/get-user/rewards/${user.email}`, {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          rewards: newRewards,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setRewards(newRewards);
+          setReward("");
+          console.log("rewards updated");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      console.log(rewards);
+    }
+  };
 
   const updateReward = (e) => {
     setReward(e.target.value);
   };
 
+  // let points =
+    // tasksCompleted * 5 + weeklysCompleted * 50 + monthlysCompleted * 250;
+  // let level = 0;
+
+  // if (points >= 50 && points < 125) {
+  //   level = 1;
+  // } else if (points >= 125 && points < 225) {
+  //   level = 2;
+  // } else if (points >= 225 && points < 350) {
+  //   level = 3;
+  // } else if (points >= 350 && points < 500) {
+  //   level = 4;
+  // } else {
+  //   level = 5;
+  // }
+
+// useEffect(() => {
+
+//   return(
+
+//     <>
+//     </>
+//   )
+// }, [])
+
+
+//   let hideSquare1 = false;
+
+//   if (tasksCompleted >= 10) {
+//     let hideSquare1 = true;
+//   }
+
+//   if (tasksCompleted >= 15) {
+//     const hideSquare2 = true;
+//   }
+
+  // if (tasksCompleted >= 10) {
+  //   const hideSquare1 = true;
+  // }
+
+  // if (tasksCompleted >= 10) {
+  //   const hideSquare1 = true;
+  // }
+
   return (
-    <ProfileContainer>
-      <UserInfoContainer>
-        <Avatar>avatar</Avatar>
-        <Username>@username</Username>
-        <h3>full name</h3>
-        <div>level 8 </div>
-        <div>tasks completed: 2398</div>
-        <SettingsLink onClick={handleClick}>Settings</SettingsLink>
-      </UserInfoContainer>
+    <>
+      {!mongoUser ? (
+        <Loading />
+      ) : (
+        <ProfileContainer>
+          <UserInfoContainer>
+            <AddAvatar/>
+            <Username>@{mongoUser.data.username}</Username>
+            <div>level {level} </div>
+            <div>points: {points}</div>
+            <div>to do's completed: {mongoUser.data.tasksCompleted}</div>
+            <div>weeklys completed: {weeklysCompleted}</div>
+            <div>monthlys completed: {monthlysCompleted}</div>
 
-<RightContainer>
+            <SettingsLink onClick={handleClick}>Settings</SettingsLink>
+          </UserInfoContainer>
 
-    <RewardForm onSubmit={handleSubmit}>
-      Add New Rewards: 
-      <RewardInput type="text"
-          placeholder="Add a new reward to your list"
-          value={reward}
-          onChange={updateReward}/>
-        <RewardButton type="submit">Add Reward To Collection
-          </RewardButton>
+          <RightContainer>
+            <RewardForm onSubmit={handleSubmit}>
+              Add New Rewards:
+              <RewardInput
+                type="text"
+                placeholder="Add a new reward to your list"
+                value={reward}
+                onChange={updateReward}
+              />
+              <RewardButton type="submit">
+                Add Reward To Collection
+                {/* add pop up for user to see their current rewards
+        stretch: edit rewards */}
+              </RewardButton>
+            </RewardForm>
 
-    </RewardForm>
+            <BadgeFlex>
+              <BadgeContainer>
+                <Calendar1 size={90} />
+                <HideSqaure1
+                  // style={{
+                  //   visibility: hideSquare1 ? "hidden" : "visible",
+                  // }}
+                >
+                  ?
+                </HideSqaure1>
+              </BadgeContainer>
 
-      <BadgeFlex>
-        <BadgeContainer>
-          <Calendar1 size={90} />
-          <HideSqaure1>?</HideSqaure1>
-        </BadgeContainer>
+              <BadgeContainer>
+                <Calendar2 size={90} />
+                <HideSqaure2 >?</HideSqaure2>
+              </BadgeContainer>
 
-        <BadgeContainer>
-          <Calendar2 size={90} />
-          <HideSqaure2>?</HideSqaure2>
-        </BadgeContainer>
+              <BadgeContainer>
+                <Checkmark size={90} />
+                <HideSqaure3>?</HideSqaure3>
+              </BadgeContainer>
 
-        <BadgeContainer>
-          <Checkmark size={90} />
-          <HideSqaure3>?</HideSqaure3>
-        </BadgeContainer>
-
-        <BadgeContainer>
-          <CoffeeCup size={90} />
-          <HideSqaure4>?</HideSqaure4>
-        </BadgeContainer>
-      </BadgeFlex>
-
-      </RightContainer>
-
-    </ProfileContainer>
+              <BadgeContainer>
+                <CoffeeCup size={90} />
+                <HideSqaure4>?</HideSqaure4>
+              </BadgeContainer>
+            </BadgeFlex>
+          </RightContainer>
+        </ProfileContainer>
+      )}
+    </>
   );
 };
 
+
 const RightContainer = styled.div`
-display: flex;
-flex-direction: column; 
-`;
+  display: flex;
+  flex-direction: column;
+  `;
 
 const UserInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
+  `;
 
 const ProfileContainer = styled.div`
   display: flex;
   margin-top: 10vh;
   justify-content: space-evenly;
-`;
+  `;
 
 const Avatar = styled.div``;
 
 const Username = styled.h1`
   border: none;
   background: none;
-`;
+  `;
 
 const SettingsLink = styled.button`
   margin-top: 40px;
@@ -133,7 +207,14 @@ const SettingsLink = styled.button`
   width: 9vw;
   padding: 8px 10px 8px 10px;
   font-size: 1em;
-`;
+  `;
+
+  const AddAvatar = styled(CgGirl)`
+  border: none;
+  width: 50%;
+  height: 50%;
+  margin-left: 3vw;
+  `
 
 const Calendar1 = styled(AiOutlineCalendar)`
   border: none;
@@ -233,16 +314,14 @@ const HideSqaure4 = styled.div`
 `;
 
 const RewardForm = styled.form`
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `;
 
-const RewardInput = styled.input`
-
-`;
+const RewardInput = styled.input``;
 
 const RewardButton = styled.button`
-margin-bottom: 5vh; 
+  margin-bottom: 5vh;
 `;
 
 export default Profile;

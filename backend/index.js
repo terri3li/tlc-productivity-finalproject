@@ -9,16 +9,12 @@ const OAuth2Client = new OAuth2(
   ""
 );
 
-OAuth2Client.setCredentials({
-  refresh_token:
-    "",
-});
 
-const calendar = google.calendar({version: 'v3', auth: OAuth2Client })
+
 
 const port = 5678;
 
-const { addUser, checkForUser, updateRewards, updateToDos } = require("./handlers");
+const { addUser, checkForUser, updateRewards, updateToDos, updateTasks } = require("./handlers");
 
 express()
   .use(morgan("tiny"))
@@ -30,9 +26,10 @@ express()
 
   .get("/get-user/:userEmail", checkForUser)
   .post("/new-user", addUser)
+
   .patch("/get-user/rewards/:userEmail", updateRewards)
   .patch("/get-user/toDos/:userEmail", updateToDos)
-
+  .patch("/get-user/tasks-completed/:userEmail", updateTasks)
  
   // catch all
   .get("*", (req, res) => {

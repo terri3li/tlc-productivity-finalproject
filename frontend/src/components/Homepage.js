@@ -10,13 +10,22 @@ import ToDoList from "./ToDoList";
 import TreatYourself from "./TreatYourself";
 import HomeCalendar from "./Calendar";
 import WeeklyGoals from "./WeeklyGoals";
+import Loading from "./Loading";
 
 const Homepage = () => {
-  const { user, isAuthenticated } = useContext(CurrentContext);
+  const { user, isAuthenticated, mongoUser } = useContext(CurrentContext);
 
   return (
+    <>
+    {!mongoUser ? (
+      <Loading />
+      ) : (
+        
     <PageContainer>
       <Header />
+{!isAuthenticated ? (
+  <div>
+  </div> ) : (
 
       <>
         <MainContainer>
@@ -38,7 +47,15 @@ const Homepage = () => {
 
         </MainContainer>
       </>
+
+
+)}
+
+
+
     </PageContainer>
+      )}
+      </>
   );
 };
 

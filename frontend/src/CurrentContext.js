@@ -12,7 +12,6 @@ const CurrentProvider = ({ children }) => {
   const [weeklysCompleted, setWeeklysCompleted] = useState(0);
   const [monthlysCompleted, setMonthlysCompleted] = useState(0);
   const [toDos, setToDos] = useState([]);
-
   const [recentTasks, setRecentTasks] = useState([]);
   const [completed, setCompleted] = useState(false);
   //below is used to set up & link auth0 to mongodb
@@ -20,6 +19,9 @@ const CurrentProvider = ({ children }) => {
   const [mongoUser, setMongoUser] = useState({}); 
   const { user, isAuthenticated, isLoading } = useAuth0();
   const [mounted, setMounted] = useState(null);
+
+  const [points, setPoints] = useState(0);
+  const [level, setLevel] = useState(0);
   const [rewards, setRewards] = useState(["Snack time"]);
 
   //not sure i'll need the time here, check later
@@ -58,11 +60,13 @@ const CurrentProvider = ({ children }) => {
           username: user.nickname,
           email: user.email,
           avatar: user.picture,
-          toDo: [],
+          toDos: [],
           rewards: [rewards],
           tasksCompleted: tasksCompleted,
           weeklysCompleted: weeklysCompleted,
-          monthlysCompleted, monthlysCompleted
+          monthlysCompleted, monthlysCompleted,
+          points: points,
+          level: level
         }),
       })
         .then((res) => res.json())
@@ -117,6 +121,14 @@ const CurrentProvider = ({ children }) => {
           isLoading,
           toDos,
           setToDos,
+          weeklysCompleted,
+          setWeeklysCompleted,
+          monthlysCompleted,
+          setMonthlysCompleted,
+          points,
+          setPoints,
+          level,
+          setLevel
         }}
       >
         {children}
