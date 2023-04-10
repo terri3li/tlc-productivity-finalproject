@@ -22,8 +22,8 @@ const TreatYourself = () => {
             onClick={() => {
               
               rewardsArray = mongoUser.data.rewards
-              console.log(rewardsArray)
-              console.log(mongoUser)
+              // console.log(rewardsArray)
+              // console.log(mongoUser)
               window.alert(
                 `${
                   rewardsArray[

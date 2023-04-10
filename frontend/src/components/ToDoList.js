@@ -21,29 +21,29 @@ const ToDoList = () => {
     setToDos,
   } = useContext(CurrentContext);
 
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   if (mongoTrigger) {
-  //   fetch(`/get-user/toDos/${user.email}`, {
-  //     method: "PATCH",
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       toDo: [toDos],
-  //     }),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log("to dos updated");
-  //       setMongoTrigger(false);
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     });
-  //   }
-  // }, [mongoTrigger]);
+    if (mongoTrigger) {
+    fetch(`/get-user/toDos/${user.email}`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        toDo: toDos,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("to dos updated");
+        setMongoTrigger(false);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    }
+  }, [mongoTrigger]);
 
   ////------- SUBMIT
 

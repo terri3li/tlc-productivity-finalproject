@@ -86,6 +86,7 @@ const CurrentProvider = ({ children }) => {
         fetch(`/get-user/${user.email}`)
           .then((res) => res.json())
           .then((data) => {
+            setToDos(data.data.toDo)
             window.localStorage.setItem(
               "loggedInUser",
               JSON.stringify(data.data)
@@ -101,6 +102,8 @@ const CurrentProvider = ({ children }) => {
   if (isLoading) {
     return <Spinner size={90} />;
   }
+
+
 
   return (
     <>
