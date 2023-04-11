@@ -51,14 +51,13 @@ const Profile = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          // setMongoUser({ ...mongoUser, rewards: [mongoUser.data] });
-          // console.log("rewards updated");
+       
           setRewardsTrigger(false);
         })
         .catch((e) => {
           console.log(e);
         });
-      // console.log(rewards);
+  
     }
   }, [rewardsTrigger]);
 
@@ -151,8 +150,6 @@ const Profile = () => {
                   />
                   <RewardButton type="submit">
                     Add Reward To Collection
-                    {/* add pop up for user to see their current rewards
-        stretch: edit rewards */}
                   </RewardButton>
                 </InputAndButton>
               </RewardForm>

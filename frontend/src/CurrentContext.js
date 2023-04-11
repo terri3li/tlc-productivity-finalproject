@@ -89,9 +89,10 @@ const CurrentProvider = ({ children }) => {
           .then((data) => {
             console.log(data.data)
             setToDos(data.data.toDos)
+            setRewards(data.data.rewards)
             window.localStorage.setItem(
-              "loggedInUser",
-              JSON.stringify(data.data)
+              "rewards",
+              JSON.stringify(data.data.rewards)
             );
           })
           .catch((e) => {
