@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useContext, useState, useEffect } from "react";
 import { CurrentContext } from "../CurrentContext";
 import Loading from "./Loading";
+import RewardsPopUp from "./popups/RewardsPopUp";
 
 const TreatYourself = () => {
   const { mongoUser } = useContext(CurrentContext);
@@ -17,6 +18,7 @@ const TreatYourself = () => {
         ) : (
           
           <Container>
+            <RewardsPopUp />
           Getting stuff done?
           <TreatButton
             onClick={() => {

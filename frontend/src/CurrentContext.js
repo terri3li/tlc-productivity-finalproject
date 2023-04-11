@@ -19,6 +19,7 @@ const CurrentProvider = ({ children }) => {
   const [mongoUser, setMongoUser] = useState({}); 
   const { user, isAuthenticated, isLoading } = useAuth0();
   const [mounted, setMounted] = useState(null);
+  const [fortune, setFortune] = useState("")
 
   const [points, setPoints] = useState(0);
   const [level, setLevel] = useState(0);
@@ -86,7 +87,8 @@ const CurrentProvider = ({ children }) => {
         fetch(`/get-user/${user.email}`)
           .then((res) => res.json())
           .then((data) => {
-            setToDos(data.data.toDo)
+            console.log(data.data)
+            setToDos(data.data.toDos)
             window.localStorage.setItem(
               "loggedInUser",
               JSON.stringify(data.data)
@@ -121,6 +123,7 @@ const CurrentProvider = ({ children }) => {
           setRewards,
           isAuthenticated,
           mongoUser,
+          setMongoUser,
           isLoading,
           toDos,
           setToDos,
@@ -131,7 +134,9 @@ const CurrentProvider = ({ children }) => {
           points,
           setPoints,
           level,
-          setLevel
+          setLevel,
+          fortune,
+          setFortune
         }}
       >
         {children}

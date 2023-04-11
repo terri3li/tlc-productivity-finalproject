@@ -1,7 +1,7 @@
 import Popup from 'reactjs-popup';
 import styled from 'styled-components';
 
-const PopUpTest = () => {
+const WeeklyPopUp = () => {
 
     // document.body.style.opacity = 0.5
 
@@ -15,7 +15,9 @@ const PopUpTest = () => {
                       <PopUpContainer>
                         
                           <div>
-                              Instructions
+                              Weekly To Dos: 
+                              You get one of these each week & completing will earn you 50 pts 
+                              Tip: It's best to set a bigger to do item here that is going to take some time to complete!
                           </div>
                           <div>
                               <button onClick=
@@ -35,4 +37,4 @@ const PopUpContainer = styled.div`
 border: ${({ theme }) => theme.border};
 `;
 
-export default PopUpTest;
+export default WeeklyPopUp;

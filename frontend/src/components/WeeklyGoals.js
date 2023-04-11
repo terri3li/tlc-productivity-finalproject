@@ -3,19 +3,21 @@ import { CurrentContext } from "../CurrentContext";
 import { setDay } from "date-fns";
 import styled from "styled-components";
 import { format } from "date-fns";
+import WeeklyPopUp from "./popups/WeeklyPopUp";
 
 const WeeklyGoals = () => {
+  const [weeklyUpdate, setWeeklyUpdate] = useState("");
   const [daysLeftWeek, setDaysLeftWeek] = useState(0);
   const [weeklyGoal, setWeeklyGoal] = useState(null);
-  const [currentWeek, setCurrentWeek] = useState("");
-  const [weeklyUpdate, setWeeklyUpdate] = useState("");
-  const [editWeekly, setEditWeekly] = useState(0);
+  const [completeTrigger, setCompleteTrigger] = useState(false);
+  const [deleteTrigger, setDeleteTrigger] = useState(false);
+
+  const { weeklysCompleted, setWeeklysCompleted, user } =
+    useContext(CurrentContext);
 
   let date = new Date();
   let month = date.getMonth();
-  let day = date.getDate();
   let weekday = date.getDay();
-  let year = date.getFullYear();
   let first = date.getDate() - date.getDay();
   let sundayDate = format(new Date(date.setDate(first)), "do");
 
@@ -38,34 +40,84 @@ const WeeklyGoals = () => {
     setDaysLeftWeek(6 - weekday);
   }, []);
 
+  ////----- COMPLETE && update tasks in Mongo
+
+  useEffect(() => {
+    if (completeTrigger) {
+      const weeklysCompletedForPatch = weeklysCompleted + 1;
+      fetch(`/get-user/weeklys-completed/${user.email}`, {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          weeklysCompleted: weeklysCompletedForPatch,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setWeeklysCompleted(weeklysCompleted + 1);
+          setCompleteTrigger(false);
+          // setDeleteTrigger(true);
+          console.log("weekly completed");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [completeTrigger]);
+
+  ////----- DELETE/UPDATE ON MONGO
+
+  useEffect(() => {
+    if (deleteTrigger) {
+      fetch(`/get-user/weeklys-complete/${user.email}`, {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // weeklyGoal: toDos,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("weekly updated (deleted)");
+          setDeleteTrigger(false);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [deleteTrigger]);
+
+  ////-----HANDLESUBMIT
+
   const handleSubmitWeekly = (e) => {
     e.preventDefault();
 
-    if (editWeekly) {
-      // const updatedMonthlyGoal =
-      // // setToDos(updatedToDos);
-      // // setEditToDo(0);
-      // // setToDo("");
-      // return;
+    if (weeklyUpdate !== "") {
+      setWeeklyGoal(weeklyUpdate);
+      setWeeklyUpdate("");
     }
-
-    setWeeklyGoal(weeklyUpdate);
-    setWeeklyUpdate("");
   };
 
-  const handleEdit = (e) => {
-    setWeeklyUpdate("test");
-    setEditWeekly(weeklyGoal);
+  ////------ HANDLEDELETE
+
+  const handleDelete = () => {
+    setWeeklyGoal("");
+    setDeleteTrigger(true);
   };
 
-  // const setWeekly = () => {
-  //   if (weeklyGoal) {
-  //     return weeklyGoal;
-  //   } else {
-  //     return <input type="text" />;
-  //   }
-  // };
+  ////------- HANDLECOMPLETE
 
+  const handleComplete = () => {
+    setCompleteTrigger(true);
+  };
+
+  ////---- UPDATE
 
   const updateWeekly = (e) => {
     setWeeklyUpdate(e.target.value);
@@ -74,6 +126,7 @@ const WeeklyGoals = () => {
   return (
     <GoalContainer>
       <WeeklyContainer>
+        <WeeklyPopUp />
         <WeeklyHeader>
           <h2>
             goal for the week of sunday,{" "}
@@ -81,54 +134,54 @@ const WeeklyGoals = () => {
           </h2>
           <WeeklyDays> days left to complete: {daysLeftWeek}</WeeklyDays>
         </WeeklyHeader>
-        <form onSubmit={handleSubmitWeekly}>
-          <input
+        <WeeklyForm onSubmit={handleSubmitWeekly}>
+          <GoalInput
             type="text"
-            placeholder="Enter monthly goal here"
+            placeholder="Enter weekly goal here"
             onChange={updateWeekly}
           />{" "}
-          <button type="submit">{editWeekly ? "Edit" : "Enter"}</button>
-        </form>
-      </WeeklyContainer>
+          <GoalButton type="submit">Enter</GoalButton>
+        </WeeklyForm>
 
       <>
         {weeklyGoal ? (
           <WeeklyGoalContainer>
             {weeklyGoal}
+
             <button
               onClick={() => {
-                handleEdit(weeklyGoal);
+                handleDelete();
               }}
-            >
-              edit
-            </button>
-            <button
-              onClick={() => {
-                // handleDelete(item.id);
-              }}
-            >
+              >
               delete
             </button>
             {/* stretch: add a second "are you sure" step for delete */}
             <button
               onClick={() => {
-                // handleComplete(item.id);
+                handleComplete();
               }}
-            >
+              >
               complete
             </button>
           </WeeklyGoalContainer>
         ) : (
           <></>
-        )}
+          )}
       </>
+      
+          </WeeklyContainer>
     </GoalContainer>
   );
 };
 
 const WeeklyGoalContainer = styled.div`
-display: flex;
-`
+  display: flex;
+`;
+
+const WeeklyForm = styled.form`
+  display: flex;
+  gap: 1vw;
+`;
 
 const WeeklyHeader = styled.div``;
 
@@ -142,6 +195,18 @@ const WeeklyContainer = styled.div`
 
 const WeeklyDays = styled.h4`
   color: ${({ theme }) => theme.light};
+`;
+
+const GoalInput = styled.input`
+  width: 15vw;
+  border-radius: 5px;
+  padding: 0.5vw;
+  font-size: 0.9em;
+`;
+
+const GoalButton = styled.button`
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
 `;
 
 const GoalContainer = styled.div`

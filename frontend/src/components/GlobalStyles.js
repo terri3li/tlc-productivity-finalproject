@@ -1,13 +1,14 @@
-import { createGlobalStyle} from "styled-components"
+import { createGlobalStyle } from "styled-components";
 export default createGlobalStyle`
 
 * {
   border: ${({ theme }) => theme.border};
+  font-family: 'roboto mono', serif;
+
 }
   body, button {
     background: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.text};
-    font-family: 'roboto mono', serif;
     transition: all 0.10s linear;
   }
 
@@ -30,10 +31,8 @@ input::placeholder {
   h1 {
     background: ${({ theme }) => theme.header};
   }
-  `
+  `;
 
-
-  
 // lightTheme darkTheme
 
 // moonlightBytes

@@ -1,12 +1,16 @@
 import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { CurrentContext } from "../CurrentContext";
-import Loading from "./Loading"
+import Loading from "./Loading";
+import ToDoPopUp from "./popups/ToDoPopUp";
 
 const ToDoList = () => {
   const [toDo, setToDo] = useState("");
   const [editToDo, setEditToDo] = useState(0);
-  const [mongoTrigger, setMongoTrigger] = useState(false);
+  const [submitTrigger, setSubmitTrigger] = useState(false);
+  const [deleteTrigger, setDeleteTrigger] = useState(false);
+  const [completeTrigger, setCompleteTrigger] = useState(false);
+  
 
   const {
     user,
@@ -21,31 +25,85 @@ const ToDoList = () => {
     setToDos,
   } = useContext(CurrentContext);
 
+  ////----- SUBMIT TO MONGO
+
   useEffect(() => {
-
-    if (mongoTrigger) {
-    fetch(`/get-user/toDos/${user.email}`, {
-      method: "PATCH",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        toDo: toDos,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("to dos updated");
-        setMongoTrigger(false);
+    if (submitTrigger) {
+      fetch(`/get-user/toDos/${user.email}`, {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          toDos: toDos,
+        }),
       })
-      .catch((e) => {
-        console.log(e);
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("to dos updated (added)");
+          setSubmitTrigger(false);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     }
-  }, [mongoTrigger]);
+  }, [submitTrigger]);
 
-  ////------- SUBMIT
+  ////----- DELETE/UPDATE ON MONGO
+
+  useEffect(() => {
+    if (deleteTrigger) {
+      fetch(`/get-user/toDos/${user.email}`, {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          toDos: toDos,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("to dos updated (deleted)");
+          setDeleteTrigger(false);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [deleteTrigger]);
+
+  ////----- COMPLETE && update tasks in Mongo
+
+  useEffect(() => {
+    if (completeTrigger) {
+      const tasksCompletedForPatch = tasksCompleted + 1;
+      fetch(`/get-user/tasks-completed/${user.email}`, {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          tasksCompleted: tasksCompletedForPatch,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setTasksCompleted(tasksCompleted + 1);
+          setCompleteTrigger(false);
+          setDeleteTrigger(true);
+          console.log("to do updated (completed)");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [completeTrigger]);
+
+  ////------- HANDLESUBMIT
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -62,20 +120,19 @@ const ToDoList = () => {
       setToDos(updatedToDos);
       setEditToDo(0);
       setToDo("");
-      setMongoTrigger(true);
+      setSubmitTrigger(true);
 
       return;
     }
 
-    //logging one behind
     if (toDo !== "") {
-      setToDos([{id: Math.floor(Math.random() * 8888888), toDo}, ...toDos]);
+      setToDos([{ id: Math.floor(Math.random() * 8888888), toDo }, ...toDos]);
       setToDo("");
-      setMongoTrigger(true);
+      setSubmitTrigger(true);
     }
   };
 
-  ////------- EDIT
+  ////------- HANDLEEDIT
 
   const handleEdit = (id) => {
     const edit = toDos.find((item) => item.id === id);
@@ -83,56 +140,32 @@ const ToDoList = () => {
     setEditToDo(id);
   };
 
-  ////------ DELETE
+  ////------ HANDLEDELETE
 
   const handleDelete = (id) => {
     const deleteToDo = toDos.filter((toDo) => toDo.id !== id);
     setToDos([...deleteToDo]);
+    setDeleteTrigger(true);
   };
-  
-////------- COMPLETE
+
+  ////------- HANDLECOMPLETE
 
   const handleComplete = (id) => {
-  
-    const tasksCompletedForPatch = tasksCompleted + 1;
-  
-    
-    fetch(`/get-user/tasks-completed/${user.email}`, {
-      method: "PATCH",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        tasksCompleted: tasksCompletedForPatch,
-      }),
-    })
-    .then((res) => res.json())
-    .then((data) => {
-        setTasksCompleted(tasksCompleted + 1);
-        setCompleted(true);
-        console.log("task updated");
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-
+    setCompleteTrigger(true)
     const deleteToDo = toDos.filter((toDo) => toDo.id !== id);
     setToDos([...deleteToDo]);
   };
 
   ////------ UPDATE
+console.log(toDos);
 
   const updateToDo = (e) => {
     setToDo(e.target.value);
   };
 
- 
-   
-
   return (
     <ToDoContainer>
-    
+      <ToDoPopUp/>
       <Title>To Do List</Title>
       <ToDoForm onSubmit={handleSubmit}>
         <ToDoInput
@@ -142,66 +175,112 @@ const ToDoList = () => {
           onChange={updateToDo}
         />
 
-        <button type="submit">{editToDo ? "Edit" : "Enter"}</button>
+        <EnterEditButton type="submit">{editToDo ? "Edit" : "Enter"}</EnterEditButton>
       </ToDoForm>
 
-      {/* ---posted to do items below--- */}
 
-      <ul>
+
+
+
+      <List>
         {toDos.map((item) => {
-         return (
-            <li key={item.id}>
-            
-              <ToDoItem key={item.id}>To Do: {item.toDo}</ToDoItem>
-              <button
+          return (
+            <ItemButtonContainer>
+            <ItemContainer key={item.id}>
+              <ToDoItem key={item.id}>{item.toDo}</ToDoItem>
+              </ItemContainer>
+              <ButtonContainer>
+
+              <ItemButton
                 onClick={() => {
                   handleEdit(item.id);
                 }}
               >
                 edit
-              </button>
-              <button
+              </ItemButton>
+              <ItemButton
                 onClick={() => {
                   handleDelete(item.id);
                 }}
               >
                 delete
-              </button>
-              {/* stretch: add a second "are you sure" step for delete */}
-              <button
+              </ItemButton>
+              
+              <ItemButton
                 onClick={() => {
                   handleComplete(item.id);
                 }}
               >
                 complete
-              </button>
-            </li>
+              </ItemButton>
+                </ButtonContainer>
+</ItemButtonContainer>
+            
           );
         })}
-      </ul>
+      </List>
     </ToDoContainer>
   );
 };
 
 const ToDoContainer = styled.div`
-display: flex;
-flex-direction: column;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: solid 1px;
+  border-radius: 10px;
+  padding: 1vw;
 `;
 
 const Title = styled.h2`
-text-decoration: underline;
+  text-decoration: underline;
+`;
+
+const List = styled.ul`
+list-style-type: none;
+margin-right: 3vw;
 `;
 
 const ToDoItem = styled.span``;
 
 const ToDoForm = styled.form`
   display: flex;
-  flex-direction: column;
+  gap: 1vw;
 `;
 
 const ToDoInput = styled.input`
-  width: 400px;
+  width: 20vw;
+  padding: 0.5vw;
+  margin-bottom: 1vw;
+  border-radius: 5px;
+  font-size:0.9em;
+`;
+
+const EnterEditButton = styled.button`
+width: 5vw;
+height: 4.3vh;
+border-radius: 5px;
+`;
+
+const ItemContainer = styled.li`
+display: flex;
+
+padding: 1vh;
+margin-bottom: 1.5vh; 
+border-radius: 5px;
+`;
+
+const ItemButton = styled.button`
+padding: 0.75vh;
+`;
+
+const ButtonContainer = styled.div`
+`;
+
+const ItemButtonContainer = styled.div`
+display: flex;
+align-items: baseline;
+gap: 2vh;
 `;
 
 export default ToDoList;

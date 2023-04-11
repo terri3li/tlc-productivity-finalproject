@@ -8,6 +8,7 @@ import {
 } from "react-icons/ai";
 import {  CgGirl } from "react-icons/cg"
 import Loading from "./Loading";
+import ProfileRewardsPopUp from "./popups/ProfileRewardsPopUp";
 import { CurrentContext } from "../CurrentContext";
 
 const Profile = () => {
@@ -27,6 +28,8 @@ const Profile = () => {
     monthlysCompleted,
     mongoUser,
   } = useContext(CurrentContext);
+
+  // console.log(monthlysCompleted)
 
   const handleClick = (e) => {
     navigate("/settings");
@@ -50,6 +53,7 @@ const Profile = () => {
         .then((res) => res.json())
         .then((data) => {
           setRewards(newRewards);
+          
           setReward("");
           console.log("rewards updated");
         })
@@ -107,7 +111,7 @@ const Profile = () => {
   // if (tasksCompleted >= 10) {
   //   const hideSquare1 = true;
   // }
-
+console.log(mongoUser);
   return (
     <>
       {!mongoUser ? (
@@ -117,18 +121,21 @@ const Profile = () => {
           <UserInfoContainer>
             <AddAvatar/>
             <Username>@{mongoUser.data.username}</Username>
-            <div>level {level} </div>
-            <div>points: {points}</div>
+            <div>level {mongoUser.data.level} </div>
+            <div>points: {mongoUser.data.points}</div>
             <div>to do's completed: {mongoUser.data.tasksCompleted}</div>
-            <div>weeklys completed: {weeklysCompleted}</div>
-            <div>monthlys completed: {monthlysCompleted}</div>
+            <div>weeklys completed: {mongoUser.data.weeklysCompleted}</div>
+            <div>monthlys completed: {mongoUser.data.monthlysCompleted}</div>
 
             <SettingsLink onClick={handleClick}>Settings</SettingsLink>
           </UserInfoContainer>
 
           <RightContainer>
+              Rewards:
+            <RewardContainer>
+              <ProfileRewardsPopUp />
             <RewardForm onSubmit={handleSubmit}>
-              Add New Rewards:
+              <InputAndButton>
               <RewardInput
                 type="text"
                 placeholder="Add a new reward to your list"
@@ -140,8 +147,11 @@ const Profile = () => {
                 {/* add pop up for user to see their current rewards
         stretch: edit rewards */}
               </RewardButton>
+              </InputAndButton>
             </RewardForm>
+            </RewardContainer>
 
+              Achievements:
             <BadgeFlex>
               <BadgeContainer>
                 <Calendar1 size={90} />
@@ -180,6 +190,14 @@ const Profile = () => {
 const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 5vh;
+  `;
+
+
+  const RewardContainer = styled.div`
+  border: solid 1px;
+  border-radius: 10px;
+
   `;
 
 const UserInfoContainer = styled.div`
@@ -249,11 +267,15 @@ const BadgeContainer = styled.div`
   position: relative;
   width: 125px;
   height: 125px;
+  
 `;
 
 const BadgeFlex = styled.div`
   display: flex;
   gap: 10px;
+  border: solid 1px;
+  padding: 1vw;
+  border-radius: 10px;
 `;
 
 const HideSqaure1 = styled.div`
@@ -316,12 +338,29 @@ const HideSqaure4 = styled.div`
 const RewardForm = styled.form`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin-top: 2vh; 
 `;
 
-const RewardInput = styled.input``;
+const RewardInput = styled.input`
+width: 30vw;
+border-radius: 5px;
+padding: 0.5vw;
+`;
 
 const RewardButton = styled.button`
   margin-bottom: 5vh;
+  width: 25vw;
+  border-radius: 5px;
+`;
+
+const InputAndButton = styled.div`
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+gap: 1vh;
+margin-top: 2vh;
+
 `;
 
 export default Profile;

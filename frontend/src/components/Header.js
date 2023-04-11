@@ -3,9 +3,7 @@ import styled from "styled-components";
 import { CurrentContext } from "../CurrentContext";
 
 const Header = () => {
-
-const {user, isAuthenticated} = useContext(CurrentContext);
-
+  const { user, isAuthenticated } = useContext(CurrentContext);
 
   let date = new Date();
   let hour = date.getHours();
@@ -23,27 +21,26 @@ const {user, isAuthenticated} = useContext(CurrentContext);
 
   return (
     <>
-
-{!isAuthenticated ? (
-          <Greeting>Good {timeOfDay}, sign in to get productive with us</Greeting>
-        ) : (
-          <>
-          <Greeting> Good {timeOfDay}, Terri </Greeting>
+      {!isAuthenticated ? (
+        <Greeting>Good {timeOfDay}, sign in to get productive with us</Greeting>
+      ) : (
+        <>
+          <Greeting>
+            {" "}
+            Good {timeOfDay}, {user.nickname}{" "}
+          </Greeting>
         </>
-        )}
-      
+      )}
     </>
   );
 };
 
 const Greeting = styled.h1`
   font-size: 2.5em;
-  /* font-family: cedarville-cursive; */
   text-align: center;
-padding: 12px;
-width: 65vw;
-border-radius: 10px;
-
+  padding: 12px;
+  width: 65vw;
+  border-radius: 10px;
 `;
 
 export default Header;

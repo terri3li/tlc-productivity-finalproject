@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { CurrentContext } from "../CurrentContext";
 
 import Header from "./Header";
-import Goals from "./Goals";
+import MonthlyGoals from "./MonthlyGoals";
 import styled from "styled-components";
 
 import ToDoList from "./ToDoList";
@@ -31,7 +31,7 @@ const Homepage = () => {
         <MainContainer>
 
           <FirstContainer>
-            <Goals />
+            <MonthlyGoals />
             <WeeklyGoals/>
           </FirstContainer>
 
@@ -64,6 +64,8 @@ export default Homepage;
 const MainContainer = styled.div`
   display: flex;
   gap: 3vw;
+  margin-right: 5vw;
+  margin-left: 5vw;
 `;
 
 const PageContainer = styled.div`
@@ -72,7 +74,11 @@ const PageContainer = styled.div`
   align-items: center;
 `;
 
-const FirstContainer = styled.div``;
+const FirstContainer = styled.div`
+display: flex;
+flex-direction: column;
+gap: 3vh;
+`;
 
 const SecondContainer = styled.div``;
 

@@ -11,7 +11,6 @@ import Settings from "./Settings";
 import SignUp from "./SignUp";
 import Profile from "./Profile";
 import NavBar from "./NavBar";
-import PopUpTest from "./PopUpTest";
 
 const App = () => {
   const [theme, setTheme] = useState(lightTheme);
