@@ -157,7 +157,6 @@ const ToDoList = () => {
   };
 
   ////------ UPDATE
-console.log(toDos);
 
   const updateToDo = (e) => {
     setToDo(e.target.value);

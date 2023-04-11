@@ -4,15 +4,16 @@ import styled from "styled-components";
 import {
   AiOutlineCalendar,
   AiOutlineCheckCircle,
-  AiOutlineCoffee
+  AiOutlineCoffee,
 } from "react-icons/ai";
-import {  CgGirl } from "react-icons/cg"
+import { CgGirl } from "react-icons/cg";
 import Loading from "./Loading";
 import ProfileRewardsPopUp from "./popups/ProfileRewardsPopUp";
 import { CurrentContext } from "../CurrentContext";
 
 const Profile = () => {
   const [reward, setReward] = useState("");
+  const [rewardsTrigger, setRewardsTrigger] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -27,6 +28,7 @@ const Profile = () => {
     weeklysCompleted,
     monthlysCompleted,
     mongoUser,
+    setMongoUser,
   } = useContext(CurrentContext);
 
   // console.log(monthlysCompleted)
@@ -35,11 +37,8 @@ const Profile = () => {
     navigate("/settings");
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (reward !== "") {
-      const newRewards = [reward, ...rewards];
-
+  useEffect(() => {
+    if (rewardsTrigger) {
       fetch(`/get-user/rewards/${user.email}`, {
         method: "PATCH",
         headers: {
@@ -47,20 +46,29 @@ const Profile = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          rewards: newRewards,
+          rewards: rewards,
         }),
       })
         .then((res) => res.json())
         .then((data) => {
-          setRewards(newRewards);
-          
-          setReward("");
-          console.log("rewards updated");
+          // setMongoUser({ ...mongoUser, rewards: [mongoUser.data] });
+          // console.log("rewards updated");
+          setRewardsTrigger(false);
         })
         .catch((e) => {
           console.log(e);
         });
-      console.log(rewards);
+      // console.log(rewards);
+    }
+  }, [rewardsTrigger]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (reward !== "") {
+    
+      setRewards([...rewards, reward]);
+      setReward("");
+      setRewardsTrigger(true);
     }
   };
 
@@ -69,7 +77,7 @@ const Profile = () => {
   };
 
   // let points =
-    // tasksCompleted * 5 + weeklysCompleted * 50 + monthlysCompleted * 250;
+  // tasksCompleted * 5 + weeklysCompleted * 50 + monthlysCompleted * 250;
   // let level = 0;
 
   // if (points >= 50 && points < 125) {
@@ -84,34 +92,33 @@ const Profile = () => {
   //   level = 5;
   // }
 
-// useEffect(() => {
+  // useEffect(() => {
 
-//   return(
+  //   return(
 
-//     <>
-//     </>
-//   )
-// }, [])
+  //     <>
+  //     </>
+  //   )
+  // }, [])
 
+  //   let hideSquare1 = false;
 
-//   let hideSquare1 = false;
+  //   if (tasksCompleted >= 10) {
+  //     let hideSquare1 = true;
+  //   }
 
-//   if (tasksCompleted >= 10) {
-//     let hideSquare1 = true;
-//   }
-
-//   if (tasksCompleted >= 15) {
-//     const hideSquare2 = true;
-//   }
-
-  // if (tasksCompleted >= 10) {
-  //   const hideSquare1 = true;
-  // }
+  //   if (tasksCompleted >= 15) {
+  //     const hideSquare2 = true;
+  //   }
 
   // if (tasksCompleted >= 10) {
   //   const hideSquare1 = true;
   // }
-console.log(mongoUser);
+
+  // if (tasksCompleted >= 10) {
+  //   const hideSquare1 = true;
+  // }
+  console.log(mongoUser);
   return (
     <>
       {!mongoUser ? (
@@ -119,7 +126,7 @@ console.log(mongoUser);
       ) : (
         <ProfileContainer>
           <UserInfoContainer>
-            <AddAvatar/>
+            <AddAvatar />
             <Username>@{mongoUser.data.username}</Username>
             <div>level {mongoUser.data.level} </div>
             <div>points: {mongoUser.data.points}</div>
@@ -131,34 +138,33 @@ console.log(mongoUser);
           </UserInfoContainer>
 
           <RightContainer>
-              Rewards:
+            Rewards:
             <RewardContainer>
               <ProfileRewardsPopUp />
-            <RewardForm onSubmit={handleSubmit}>
-              <InputAndButton>
-              <RewardInput
-                type="text"
-                placeholder="Add a new reward to your list"
-                value={reward}
-                onChange={updateReward}
-              />
-              <RewardButton type="submit">
-                Add Reward To Collection
-                {/* add pop up for user to see their current rewards
+              <RewardForm onSubmit={handleSubmit}>
+                <InputAndButton>
+                  <RewardInput
+                    type="text"
+                    placeholder="Add a new reward to your list"
+                    value={reward}
+                    onChange={updateReward}
+                  />
+                  <RewardButton type="submit">
+                    Add Reward To Collection
+                    {/* add pop up for user to see their current rewards
         stretch: edit rewards */}
-              </RewardButton>
-              </InputAndButton>
-            </RewardForm>
+                  </RewardButton>
+                </InputAndButton>
+              </RewardForm>
             </RewardContainer>
-
-              Achievements:
+            Achievements:
             <BadgeFlex>
               <BadgeContainer>
                 <Calendar1 size={90} />
                 <HideSqaure1
-                  // style={{
-                  //   visibility: hideSquare1 ? "hidden" : "visible",
-                  // }}
+                // style={{
+                //   visibility: hideSquare1 ? "hidden" : "visible",
+                // }}
                 >
                   ?
                 </HideSqaure1>
@@ -166,7 +172,7 @@ console.log(mongoUser);
 
               <BadgeContainer>
                 <Calendar2 size={90} />
-                <HideSqaure2 >?</HideSqaure2>
+                <HideSqaure2>?</HideSqaure2>
               </BadgeContainer>
 
               <BadgeContainer>
@@ -186,37 +192,34 @@ console.log(mongoUser);
   );
 };
 
-
 const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5vh;
-  `;
+`;
 
-
-  const RewardContainer = styled.div`
+const RewardContainer = styled.div`
   border: solid 1px;
   border-radius: 10px;
-
-  `;
+`;
 
 const UserInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
-  `;
+`;
 
 const ProfileContainer = styled.div`
   display: flex;
   margin-top: 10vh;
   justify-content: space-evenly;
-  `;
+`;
 
 const Avatar = styled.div``;
 
 const Username = styled.h1`
   border: none;
   background: none;
-  `;
+`;
 
 const SettingsLink = styled.button`
   margin-top: 40px;
@@ -225,14 +228,14 @@ const SettingsLink = styled.button`
   width: 9vw;
   padding: 8px 10px 8px 10px;
   font-size: 1em;
-  `;
+`;
 
-  const AddAvatar = styled(CgGirl)`
+const AddAvatar = styled(CgGirl)`
   border: none;
   width: 50%;
   height: 50%;
   margin-left: 3vw;
-  `
+`;
 
 const Calendar1 = styled(AiOutlineCalendar)`
   border: none;
@@ -267,7 +270,6 @@ const BadgeContainer = styled.div`
   position: relative;
   width: 125px;
   height: 125px;
-  
 `;
 
 const BadgeFlex = styled.div`
@@ -339,13 +341,13 @@ const RewardForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 2vh; 
+  margin-top: 2vh;
 `;
 
 const RewardInput = styled.input`
-width: 30vw;
-border-radius: 5px;
-padding: 0.5vw;
+  width: 30vw;
+  border-radius: 5px;
+  padding: 0.5vw;
 `;
 
 const RewardButton = styled.button`
@@ -355,12 +357,11 @@ const RewardButton = styled.button`
 `;
 
 const InputAndButton = styled.div`
-display: flex;
-flex-direction: column;
-align-items: flex-end;
-gap: 1vh;
-margin-top: 2vh;
-
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1vh;
+  margin-top: 2vh;
 `;
 
 export default Profile;

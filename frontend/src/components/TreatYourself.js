@@ -5,11 +5,11 @@ import Loading from "./Loading";
 import RewardsPopUp from "./popups/RewardsPopUp";
 
 const TreatYourself = () => {
-  const { mongoUser } = useContext(CurrentContext);
+  const { mongoUser, rewards, setRewards } = useContext(CurrentContext);
   // const [mounted, setMounted] = useState(false);
   // const [mongoRewards, setMongoRewards] = useState([]);
   // console.log(mongoRewards);
-  let rewardsArray = [];
+
 
   return (
     <>
@@ -21,15 +21,14 @@ const TreatYourself = () => {
             <RewardsPopUp />
           Getting stuff done?
           <TreatButton
+    
             onClick={() => {
               
-              rewardsArray = mongoUser.data.rewards
-              // console.log(rewardsArray)
-              // console.log(mongoUser)
+             
               window.alert(
                 `${
-                  rewardsArray[
-                    Math.floor(Math.random() * rewardsArray.length)
+                  rewards[
+                    Math.floor(Math.random() * rewards.length)
                   ]
                 }!`
               );

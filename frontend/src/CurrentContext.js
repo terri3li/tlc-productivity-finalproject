@@ -16,7 +16,7 @@ const CurrentProvider = ({ children }) => {
   const [completed, setCompleted] = useState(false);
   //below is used to set up & link auth0 to mongodb
   const [userStatusResponse, setUserStatusResponse] = useState();
-  const [mongoUser, setMongoUser] = useState({}); 
+  const [mongoUser, setMongoUser] = useState(null); 
   const { user, isAuthenticated, isLoading } = useAuth0();
   const [mounted, setMounted] = useState(null);
   const [fortune, setFortune] = useState("")
