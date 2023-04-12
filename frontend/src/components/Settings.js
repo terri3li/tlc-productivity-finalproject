@@ -1,24 +1,31 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { lightTheme, darkTheme, dustySunrise, moonlightBytes } from "./Themes";
+import { CurrentContext } from "../CurrentContext";
 
 const Settings = ({ theme, setTheme, font, setFont }) => {
   const navigate = useNavigate();
+  const [enabled, setEnabled] = useState(false);
+  const { level } = useContext(CurrentContext);
 
-  window.localStorage.setItem(
-    "theme",
-    JSON.stringify(theme)
-    );
+  useEffect(() => {
+    if (level >= 5) {
+      setEnabled(true);
+    }
+  }, [level]);
+
+  window.localStorage.setItem("theme", JSON.stringify(theme));
 
   return (
     <PageContainer>
       <SelectTheme>Select Site Theme:</SelectTheme>
       <ThemeContainer>
         <Theme onClick={() => setTheme(lightTheme)}>Light</Theme>
-         <Theme onClick={() => setTheme(darkTheme)}>Dark</Theme>
-       
-        <Theme onClick={() => setTheme(dustySunrise)}>Dusty Sunrise</Theme>
+        <Theme onClick={() => setTheme(darkTheme)}>Dark</Theme>
+        <Theme enabled={enabled} onClick={() => setTheme(dustySunrise)}>
+          Dusty Sunrise
+        </Theme>
       </ThemeContainer>
 
       <BackButton

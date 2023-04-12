@@ -33,17 +33,3 @@ input::placeholder {
     background: ${({ theme }) => theme.header};
   }
   `;
-
-// lightTheme darkTheme
-
-// moonlightBytes
-// dark palette
-
-// rockets
-// pastel rocket candies
-
-// mintCondition
-// mint and gold
-
-// dustySunrise
-// bookmarks

@@ -11,7 +11,7 @@ const options = {
   useUnifiedTopology: true,
 };
 
-////---- check for user & GET info/status
+////---- check for user & get info/status
 
 const checkForUser = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
@@ -23,6 +23,7 @@ const checkForUser = async (req, res) => {
     const findUser = await db.collection("users").findOne({ email: email });
 
     //if user exists return user info
+
     if (findUser) {
       client.close();
       res.status(200).json({
@@ -32,6 +33,7 @@ const checkForUser = async (req, res) => {
       });
     }
     //if user doesn't exist then re-route to add them
+
     else {
       res.status(200).json({
         status: 200,
@@ -97,7 +99,6 @@ const updateRewards = async (req, res) => {
     await client.connect();
     const db = client.db("ToDo-List");
     const findUser = await db.collection("users").findOne({ email: email });
-    console.log(findUser);
 
     const updateUser = {
       $set: {
@@ -124,7 +125,7 @@ const updateRewards = async (req, res) => {
   }
 };
 
-////---- PATCH user; update user to dos
+////---- PATCH user; update user to-dos
 
 const updateToDos = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
@@ -233,7 +234,7 @@ const updateMonthlys = async (req, res) => {
   }
 };
 
-//---- PATCH user; update user monthlys completed
+//---- PATCH user; update user weeklys completed
 
 const updateWeeklys = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);

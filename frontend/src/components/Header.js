@@ -7,9 +7,7 @@ const Header = () => {
 
   let date = new Date();
   let hour = date.getHours();
-  let min = date.getMinutes();
-  let time = `${hour}:${min}`;
-
+ 
   let timeOfDay = "";
   if (hour >= 0 && hour <= 11) {
     timeOfDay = "Morning";
@@ -22,7 +20,7 @@ const Header = () => {
   return (
     <Container>
       {!isAuthenticated ? (
-        <Greeting>Good {timeOfDay}, sign in to get productive with us</Greeting>
+        <Greeting>Good {timeOfDay}, sign in to get productive</Greeting>
       ) : (
         <>
           <Greeting>

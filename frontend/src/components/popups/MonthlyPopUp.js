@@ -12,8 +12,8 @@ const MonthlyPopUp = () => {
               You get one of these each month & completing will earn you 250 pts
               <div>
               
-                Tip: It's best to set a bigger to do item here that is going to
-                take some time to complete
+                Tip: It's best to set a bigger item here that is going to
+                take some time to complete!
               </div>
             </PopUpInfo>
             <div>

@@ -23,22 +23,16 @@ const {
 express()
   .use(morgan("tiny"))
   .use(express.json())
-
-  // Any requests for static files will go into the public folder
-  // probably won't need
   .use(express.static("public"))
 
   .get("/get-user/:userEmail", checkForUser)
   .post("/new-user", addUser)
 
   .patch("/get-user/rewards/:userEmail", updateRewards)
-
   .patch("/get-user/toDos/:userEmail", updateToDos)
   .patch("/get-user/tasks-completed/:userEmail", updateTasks)
-
   .patch("/get-user/monthlys-completed/:userEmail", updateMonthlys)
   .patch("/get-user/weeklys-completed/:userEmail", updateWeeklys)
-
   .patch("/get-user/monthly-to-do/:userEmail", updateMonthlyToDo)
   .patch("/get-user/weekly-to-do/:userEmail", updateWeeklyToDo)
 

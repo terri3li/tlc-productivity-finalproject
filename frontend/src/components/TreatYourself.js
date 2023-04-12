@@ -5,10 +5,7 @@ import Loading from "./Loading";
 import RewardsPopUp from "./popups/RewardsPopUp";
 
 const TreatYourself = () => {
-  const { mongoUser, rewards, setRewards } = useContext(CurrentContext);
-  // const [mounted, setMounted] = useState(false);
-  // const [mongoRewards, setMongoRewards] = useState([]);
-  // console.log(mongoRewards);
+  const { mongoUser, rewards } = useContext(CurrentContext);
 
 
   return (
@@ -26,7 +23,7 @@ const TreatYourself = () => {
     
             onClick={() => {
               
-             
+            
               window.alert(
                 `${
                   rewards[

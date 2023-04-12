@@ -1,16 +1,28 @@
 import Popup from "reactjs-popup";
 import styled from "styled-components";
+import { useContext } from "react";
+import { CurrentContext } from "../../CurrentContext";
 
-const WeeklyPopUp = () => {
+////---- currently not working or being used, need to transfer window alert in TreatYourself here
+
+
+const TreatYourselfPopUp = () => {
+
+    const {rewards} = useContext(CurrentContext);
+
   return (
     <div>
       <StyledPopup trigger={<PopUpButton> ? </PopUpButton>} modal nested>
         {(close) => (
           <PopUpContainer>
             <PopUpInfo>
-              <div>Weekly To Dos: </div>
-              You get one of these each week & completing will earn you 50 pts 
-              <div>    Tip: It's best to set a bigger item here that is going to take some time to complete!</div>
+              <div>Your Reward:</div>
+              {      `${
+                  rewards[
+                    Math.floor(Math.random() * rewards.length)
+                  ]
+                }!`}
+             
             </PopUpInfo>
             <div>
               <button onClick={() => close()}>Close</button>
@@ -48,4 +60,4 @@ const PopUpButton = styled.button`
   border-radius: 10px;
 `;
 
-export default WeeklyPopUp;
+export default TreatYourselfPopUp;

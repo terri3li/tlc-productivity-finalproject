@@ -3,9 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
 import CurrentProvider from "../CurrentContext";
 import { ThemeProvider } from "styled-components";
-import Popup from "reactjs-popup";
-//// component imports
-import { lightTheme, darkTheme } from "./Themes";
+import { darkTheme } from "./Themes";
 import Homepage from "./Homepage";
 import Settings from "./Settings";
 import SignUp from "./SignUp";
@@ -16,8 +14,6 @@ const App = () => {
   const [theme, setTheme] = useState(darkTheme);
   const [font, setFont] = useState("roboto mono");
 
-
-
   return (
     <CurrentProvider>
       <BrowserRouter>
@@ -25,7 +21,7 @@ const App = () => {
           <GlobalStyles />
 
           <NavBar />
-         
+
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route
@@ -42,7 +38,6 @@ const App = () => {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
-
         </ThemeProvider>
       </BrowserRouter>
     </CurrentProvider>

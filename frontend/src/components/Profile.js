@@ -22,7 +22,7 @@ const Profile = () => {
   const [hideSquare3, setHideSquare3] = useState(false);
   const [hideSquare4, setHideSquare4] = useState(false);
 
-  let level = 0;
+ 
 
   const {
     rewards,
@@ -32,6 +32,8 @@ const Profile = () => {
     user,
     mongoUser,
     setMongoUser,
+    level, 
+    setLevel
   } = useContext(CurrentContext);
 
   const handleClick = (e) => {
@@ -107,17 +109,17 @@ const Profile = () => {
   };
 
   if (points >= 50 && points < 125) {
-    level = 1;
+    setLevel(1)
   } else if (points >= 125 && points < 225) {
-    level = 2;
+    setLevel(2)
   } else if (points >= 225 && points < 350) {
-    level = 3;
+    setLevel(3)
   } else if (points >= 350 && points < 500) {
-    level = 4;
+    setLevel(4)
   } else if (points > 500) {
-    level = 5;
+    setLevel(5)
   } else {
-    level = 0;
+    setLevel(0)
   }
 
   return (
@@ -135,7 +137,7 @@ const Profile = () => {
             <div>weeklys completed: {mongoUser.data.weeklysCompleted}</div>
             <div>monthlys completed: {mongoUser.data.monthlysCompleted}</div>
 
-            <SettingsLink onClick={handleClick}>Settings</SettingsLink>
+            <SettingsLink onClick={handleClick} level={level}>Settings</SettingsLink>
           </UserInfoContainer>
 
           <RightContainer>

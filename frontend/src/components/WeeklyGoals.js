@@ -171,7 +171,7 @@ const WeeklyGoals = () => {
             placeholder="Enter weekly goal here"
             onChange={updateWeekly}
             value={weeklyUpdate}
-          />{" "}
+          />{""}
           <GoalButton type="submit">Enter</GoalButton>
         </WeeklyForm>
 
