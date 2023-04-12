@@ -14,6 +14,8 @@ const CurrentProvider = ({ children }) => {
   const [toDos, setToDos] = useState([]);
   const [recentTasks, setRecentTasks] = useState([]);
   const [completed, setCompleted] = useState(false);
+  const [monthlyGoal, setMonthlyGoal] = useState(null);
+  const [weeklyGoal, setWeeklyGoal] = useState("");
   //below is used to set up & link auth0 to mongodb
   const [userStatusResponse, setUserStatusResponse] = useState();
   const [mongoUser, setMongoUser] = useState(null); 
@@ -62,6 +64,8 @@ const CurrentProvider = ({ children }) => {
           email: user.email,
           avatar: user.picture,
           toDos: [],
+          monthlyToDo: monthlyGoal,
+          weeklyToDo: weeklyGoal,
           rewards: [rewards],
           tasksCompleted: tasksCompleted,
           weeklysCompleted: weeklysCompleted,
@@ -90,6 +94,7 @@ const CurrentProvider = ({ children }) => {
             console.log(data.data)
             setToDos(data.data.toDos)
             setRewards(data.data.rewards)
+            setMonthlyGoal(data.data.monthlyToDo)
             window.localStorage.setItem(
               "rewards",
               JSON.stringify(data.data.rewards)
@@ -137,7 +142,11 @@ const CurrentProvider = ({ children }) => {
           level,
           setLevel,
           fortune,
-          setFortune
+          setFortune,
+          monthlyGoal,
+          setMonthlyGoal,
+          weeklyGoal,
+          setWeeklyGoal
         }}
       >
         {children}

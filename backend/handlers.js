@@ -62,6 +62,8 @@ const addUser = async (req, res) => {
       toDos: req.body.toDos,
       rewards: req.body.rewards,
       tasksCompleted: req.body.tasksCompleted,
+      monthlyToDo: req.body.monthlyToDo,
+      weeklyToDo: req.body.weeklyToDo,
       weeklysCompleted: req.body.weeklysCompleted,
       monthlysCompleted: req.body.monthlysCompleted,
       points: req.body.points,
@@ -195,7 +197,7 @@ const updateTasks = async (req, res) => {
   }
 };
 
-//---- PATCH user; update user tasks completed
+//---- PATCH user; update user monthlys completed
 
 const updateMonthlys = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
@@ -231,6 +233,42 @@ const updateMonthlys = async (req, res) => {
   }
 };
 
+////---- PATCH user; monthly goal
+
+const updateMonthlyToDo = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const email = req.params.userEmail;
+
+  try {
+    await client.connect();
+    const db = client.db("ToDo-List");
+    const findUser = await db.collection("users").findOne({ email: email });
+
+    const updateUser = {
+      $set: {
+        monthlyToDo: req.body.monthlyToDo,
+      },
+    };
+
+    const updatedList = await db
+      .collection("users")
+      .updateOne(findUser, updateUser);
+
+    client.close();
+    res.status(201).json({
+      status: 201,
+      message: "User Updated!",
+      data: updatedList,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({
+      status: 400,
+      message: "Something went wrong",
+    });
+  }
+};
+
 ///////////////////
 
 module.exports = {
@@ -239,5 +277,6 @@ module.exports = {
   updateRewards,
   updateToDos,
   updateTasks,
-  updateMonthlys
+  updateMonthlys,
+  updateMonthlyToDo
 };

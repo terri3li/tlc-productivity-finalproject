@@ -1,23 +1,19 @@
 import { useContext, useEffect, useState } from "react";
 import { CurrentContext } from "../CurrentContext";
-import { setDay } from "date-fns";
+import { setDay, setMonth } from "date-fns";
 import styled from "styled-components";
 import { format } from "date-fns";
 import MonthlyPopUp from "./popups/MonthlyPopUp";
 
 const MonthlyGoals = () => {
   const [daysLeftMonth, setDaysLeftMonth] = useState(0);
-  // const [daysLeftWeek, setDaysLeftWeek] = useState(0);
-  // const [weeklyGoal, setWeeklyGoal] = useState(null);
-  const [monthlyGoal, setMonthlyGoal] = useState("");
   const [monthlyUpdate, setMonthlyUpdate] = useState("");
-  const [editMonthly, setEditMonthly] = useState(0);
-  // const [currentWeek, setCurrentWeek] = useState("");
+  const [submitTrigger, setSubmitTrigger] = useState(false);
   const [completeTrigger, setCompleteTrigger] = useState(false);
   const [deleteTrigger, setDeleteTrigger] = useState(false);
 
 
-  const {monthlysCompleted, setMonthlysCompleted, user} = useContext(CurrentContext);
+  const {monthlysCompleted, setMonthlysCompleted, user, monthlyGoal, setMonthlyGoal} = useContext(CurrentContext);
 
   let date = new Date();
   let month = date.getMonth();
@@ -55,6 +51,31 @@ const MonthlyGoals = () => {
     }
   }, [month]);
 
+    ////----- SUBMIT TO MONGO
+
+  useEffect(() => {
+    if (submitTrigger && monthlyGoal) {
+      fetch(`/get-user/monthly-to-do/${user.email}`, {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          monthlyToDo: monthlyGoal,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("monthly goal updated");
+          setSubmitTrigger(false);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [submitTrigger]);
+
    ////----- COMPLETE && update tasks in Mongo
 
    useEffect(() => {
@@ -74,7 +95,9 @@ const MonthlyGoals = () => {
         .then((data) => {
           setMonthlysCompleted(monthlysCompleted + 1);
           setCompleteTrigger(false);
-          // setDeleteTrigger(true);
+          setDeleteTrigger(true);
+          setMonthlyGoal("");
+          setMonthlyUpdate("")
           console.log("monthly completed");
         })
         .catch((e) => {
@@ -87,14 +110,14 @@ const MonthlyGoals = () => {
 
     useEffect(() => {
       if (deleteTrigger) {
-        fetch(`/get-user/monthlys-complete/${user.email}`, {
+        fetch(`/get-user/monthly-to-do/${user.email}`, {
           method: "PATCH",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            // monthlyGoal: toDos,
+            monthlyToDo: "",
           }),
         })
           .then((res) => res.json())
@@ -108,36 +131,13 @@ const MonthlyGoals = () => {
       }
     }, [deleteTrigger]);
 
-  // useEffect(() => {
-  //   setDaysLeftWeek(6 - weekday);
-  // }, []);
-
-  // const handleEdit = (e) => {
-  //   setMonthlyUpdate();
-  //   setEditMonthly(monthlyGoal);
-  // };
-
-  // const setWeekly = () => {
-  //   if (weeklyGoal) {
-  //     return weeklyGoal;
-  //   } else {
-  //     return <input type="text" />;
-  //   }
-  // };
-
   const handleSubmitMonthly = (e) => {
     e.preventDefault();
 
-    //   if (editMonthly) {
-    //   // set
-
-    //   // setMonthlyGoal(monthlyUpdate);
-    //   // setMonthlyUpdate("");
-    // };
-
     if (monthlyUpdate !== "") {
       setMonthlyGoal(monthlyUpdate);
-      // setMonthlyUpdate(null);
+      setMonthlyUpdate("");
+      setSubmitTrigger(true);
     }
   };
 
@@ -152,6 +152,7 @@ const MonthlyGoals = () => {
 
   const handleComplete = () => {
     setCompleteTrigger(true);
+   
   };
 
   ////---- UPDATE
@@ -173,6 +174,7 @@ const MonthlyGoals = () => {
             type="text"
             placeholder="Enter monthly goal here"
             onChange={updateMonthly}
+            value={monthlyUpdate}
           />
           {""}
           <GoalButton type="submit">Enter</GoalButton>
@@ -190,7 +192,7 @@ const MonthlyGoals = () => {
               >
                 delete
               </button>
-              {/* stretch: add a second "are you sure" step for delete */}
+              
               <button
                 onClick={() => {
                   handleComplete();
