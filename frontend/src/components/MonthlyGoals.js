@@ -122,7 +122,7 @@ const MonthlyGoals = () => {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log("to dos updated (deleted)");
+            console.log("monthly updated (deleted)");
             setDeleteTrigger(false);
           })
           .catch((e) => {
@@ -130,6 +130,8 @@ const MonthlyGoals = () => {
           });
       }
     }, [deleteTrigger]);
+
+      ////-----HANDLESUBMIT
 
   const handleSubmitMonthly = (e) => {
     e.preventDefault();

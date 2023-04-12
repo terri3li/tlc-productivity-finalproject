@@ -95,6 +95,7 @@ const CurrentProvider = ({ children }) => {
             setToDos(data.data.toDos)
             setRewards(data.data.rewards)
             setMonthlyGoal(data.data.monthlyToDo)
+            setWeeklyGoal(data.data.weeklyToDo)
             window.localStorage.setItem(
               "rewards",
               JSON.stringify(data.data.rewards)

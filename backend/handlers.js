@@ -233,6 +233,43 @@ const updateMonthlys = async (req, res) => {
   }
 };
 
+//---- PATCH user; update user monthlys completed
+
+const updateWeeklys = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const email = req.params.userEmail;
+
+  try {
+    await client.connect();
+    const db = client.db("ToDo-List");
+    const findUser = await db.collection("users").findOne({ email: email });
+
+    const updateUser = {
+      $set: {
+        weeklysCompleted: req.body.weeklysCompleted,
+      },
+    };
+
+    const updatedList = await db
+      .collection("users")
+      .updateOne(findUser, updateUser);
+
+    client.close();
+    res.status(201).json({
+      status: 201,
+      message: "User Updated!",
+      data: updatedList,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({
+      status: 400,
+      message: "Something went wrong",
+    });
+  }
+};
+
+
 ////---- PATCH user; monthly goal
 
 const updateMonthlyToDo = async (req, res) => {
@@ -269,6 +306,42 @@ const updateMonthlyToDo = async (req, res) => {
   }
 };
 
+////---- PATCH user; weekly goal
+
+const updateWeeklyToDo = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const email = req.params.userEmail;
+
+  try {
+    await client.connect();
+    const db = client.db("ToDo-List");
+    const findUser = await db.collection("users").findOne({ email: email });
+
+    const updateUser = {
+      $set: {
+        weeklyToDo: req.body.weeklyToDo,
+      },
+    };
+
+    const updatedList = await db
+      .collection("users")
+      .updateOne(findUser, updateUser);
+
+    client.close();
+    res.status(201).json({
+      status: 201,
+      message: "User Updated!",
+      data: updatedList,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({
+      status: 400,
+      message: "Something went wrong",
+    });
+  }
+};
+
 ///////////////////
 
 module.exports = {
@@ -278,5 +351,7 @@ module.exports = {
   updateToDos,
   updateTasks,
   updateMonthlys,
-  updateMonthlyToDo
+  updateWeeklys,
+  updateMonthlyToDo,
+  updateWeeklyToDo
 };

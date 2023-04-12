@@ -11,6 +11,7 @@ const WeeklyGoals = () => {
   const [weeklyGoal, setWeeklyGoal] = useState(null);
   const [completeTrigger, setCompleteTrigger] = useState(false);
   const [deleteTrigger, setDeleteTrigger] = useState(false);
+  const [submitTrigger, setSubmitTrigger] = useState(false);
 
   const { weeklysCompleted, setWeeklysCompleted, user } =
     useContext(CurrentContext);
@@ -40,6 +41,31 @@ const WeeklyGoals = () => {
     setDaysLeftWeek(6 - weekday);
   }, []);
 
+    ////----- SUBMIT TO MONGO
+
+    useEffect(() => {
+      if (submitTrigger && weeklyGoal) {
+        fetch(`/get-user/weekly-to-do/${user.email}`, {
+          method: "PATCH",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            weeklyToDo: weeklyGoal,
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("weekly goal updated");
+            setSubmitTrigger(false);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
+    }, [submitTrigger]);
+
   ////----- COMPLETE && update tasks in Mongo
 
   useEffect(() => {
@@ -59,7 +85,9 @@ const WeeklyGoals = () => {
         .then((data) => {
           setWeeklysCompleted(weeklysCompleted + 1);
           setCompleteTrigger(false);
-          // setDeleteTrigger(true);
+          setDeleteTrigger(true);
+          setWeeklyGoal("");
+          setWeeklyUpdate("")
           console.log("weekly completed");
         })
         .catch((e) => {
@@ -72,14 +100,14 @@ const WeeklyGoals = () => {
 
   useEffect(() => {
     if (deleteTrigger) {
-      fetch(`/get-user/weeklys-complete/${user.email}`, {
+      fetch(`/get-user/weekly-to-do/${user.email}`, {
         method: "PATCH",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          // weeklyGoal: toDos,
+          weeklyToDo: "",
         }),
       })
         .then((res) => res.json())
@@ -101,6 +129,7 @@ const WeeklyGoals = () => {
     if (weeklyUpdate !== "") {
       setWeeklyGoal(weeklyUpdate);
       setWeeklyUpdate("");
+      setSubmitTrigger(true);
     }
   };
 
@@ -139,6 +168,7 @@ const WeeklyGoals = () => {
             type="text"
             placeholder="Enter weekly goal here"
             onChange={updateWeekly}
+            value={weeklyUpdate}
           />{" "}
           <GoalButton type="submit">Enter</GoalButton>
         </WeeklyForm>
