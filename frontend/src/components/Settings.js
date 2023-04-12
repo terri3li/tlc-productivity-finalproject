@@ -9,13 +9,12 @@ const Settings = ({ theme, setTheme, font, setFont }) => {
   const [enabled, setEnabled] = useState(false);
   const { level } = useContext(CurrentContext);
 
+  ////---- not working yet or relevent, to be used for theme unlocks
   useEffect(() => {
     if (level >= 5) {
       setEnabled(true);
     }
   }, [level]);
-
-  window.localStorage.setItem("theme", JSON.stringify(theme));
 
   return (
     <PageContainer>
@@ -44,19 +43,6 @@ const SelectTheme = styled.h2`
   margin-bottom: 5vh;
 `;
 
-const SelectFont = styled.h2`
-  margin-top: 8vh;
-`;
-
-const Font = styled.button`
-  padding: 20px;
-  font-size: 1em;
-  border-radius: 5px;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
 const PageContainer = styled.div`
   margin-left: 5vw;
 `;
@@ -78,58 +64,6 @@ const ThemeContainer = styled.div`
 
 const Theme = styled.button`
   padding: 20px;
-  font-size: 1em;
-  border-radius: 5px;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const LightTheme = styled.button`
-  background: #f1f1f1;
-  color: black;
-  padding: 20px;
-  border: solid 4px #d1d1d1;
-  outline: solid 2px gray;
-  font-size: 1em;
-  border-radius: 5px;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const DarkTheme = styled.button`
-  background: #1c2833;
-  color: #f9ff9d;
-  padding: 20px;
-  border: solid 4px #b8fffe;
-  outline: solid 2px #1c2833;
-  font-size: 1em;
-  border-radius: 5px;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const MoonTheme = styled.button`
-  background: #051e3d;
-  color: #c4caff;
-  padding: 20px;
-  border: solid 4px #ffd7f8;
-  outline: solid 2px #051e3d;
-  font-size: 1em;
-  border-radius: 5px;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const DustyTheme = styled.button`
-  background: #c06c84;
-  color: #f8b195;
-  padding: 20px;
-  border: solid 4px #355c7d;
-  outline: solid 2px #f8b195;
   font-size: 1em;
   border-radius: 5px;
   &:hover {

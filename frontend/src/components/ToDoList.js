@@ -1,7 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { CurrentContext } from "../CurrentContext";
-import Loading from "./Loading";
 import ToDoPopUp from "./popups/ToDoPopUp";
 
 const ToDoList = () => {

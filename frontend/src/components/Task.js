@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+/////----******* Ignore, not being used *********
+
 const Task = ({ setFormData, formData, toDo, setToDo }) => {
 
   return (
@@ -9,8 +11,6 @@ const Task = ({ setFormData, formData, toDo, setToDo }) => {
             e.preventDefault();
             
             }
-        console.log(toDo);
-        console.log(task);
         return <ListItem key={task.id} onClick={complete}> {task.value} </ListItem>;
       })}
     </>
@@ -22,7 +22,6 @@ display: block;
 border: none; 
 background: none; 
 padding: 5px;
-
 `;
 
 export default Task;

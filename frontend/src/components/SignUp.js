@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 // import { useAuth0 } from "@auth0/auth0-react";
 
+/////----******* Ignore, not being used *********
+
 const SignUp = () => {
   // const { user, isAuthenticated, isLoading } = useAuth0();
 

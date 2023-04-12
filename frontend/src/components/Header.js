@@ -5,6 +5,7 @@ import { CurrentContext } from "../CurrentContext";
 const Header = () => {
   const { user, isAuthenticated } = useContext(CurrentContext);
 
+  ////----- which greeting to use calculations 
   let date = new Date();
   let hour = date.getHours();
  
@@ -17,6 +18,8 @@ const Header = () => {
     timeOfDay = "Evening";
   }
 
+
+  ////----- if user logged in they will receive greeting and view homepage 
   return (
     <Container>
       {!isAuthenticated ? (

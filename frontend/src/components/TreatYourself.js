@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import { CurrentContext } from "../CurrentContext";
 import Loading from "./Loading";
 import RewardsPopUp from "./popups/RewardsPopUp";

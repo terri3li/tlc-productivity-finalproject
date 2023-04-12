@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FiHome } from "react-icons/fi";
 import { VscAccount } from "react-icons/vsc";
@@ -14,6 +13,8 @@ const NavBar = () => {
   const navigate = useNavigate();
   const { loginWithRedirect } = useAuth0();
 
+
+  ////---- nav bar clock 
   const clock = () => {
     let date = new Date();
     let hour = date.getHours();

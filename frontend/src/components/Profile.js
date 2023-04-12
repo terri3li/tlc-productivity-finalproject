@@ -17,6 +17,7 @@ const Profile = () => {
   const [rewardsTrigger, setRewardsTrigger] = useState(false);
   const navigate = useNavigate();
   
+  ////---- square 4 not set up yet (part of stretch)
   const [hideSquare1, setHideSquare1] = useState(false);
   const [hideSquare2, setHideSquare2] = useState(false);
   const [hideSquare3, setHideSquare3] = useState(false);
@@ -40,6 +41,7 @@ const Profile = () => {
     navigate("/settings");
   };
 
+  ////---- getting user info on mount to ensure pts and levels update 
   useEffect(() => {
     fetch(`/get-user/${user.email}`)
       .then((res) => res.json())
@@ -51,6 +53,8 @@ const Profile = () => {
       });
   }, []);
 
+
+ ////----- Update Mongo Rewards 
   useEffect(() => {
     if (rewardsTrigger) {
       fetch(`/get-user/rewards/${user.email}`, {
@@ -73,6 +77,9 @@ const Profile = () => {
     }
   }, [rewardsTrigger]);
 
+
+
+  ////---- set points once MongoUser loaded
   useEffect(() => {
     if (mongoUser) {
       setPoints(
@@ -95,6 +102,8 @@ const Profile = () => {
     }
   }, [mongoUser]);
 
+
+  ////--- SUBMIT rewards 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (reward !== "") {

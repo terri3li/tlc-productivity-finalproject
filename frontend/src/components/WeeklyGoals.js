@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { CurrentContext } from "../CurrentContext";
-import { setDay } from "date-fns";
 import styled from "styled-components";
 import { format } from "date-fns";
 import WeeklyPopUp from "./popups/WeeklyPopUp";

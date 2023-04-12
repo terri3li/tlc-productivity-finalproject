@@ -11,17 +11,18 @@ const MonthlyGoals = () => {
   const [completeTrigger, setCompleteTrigger] = useState(false);
   const [deleteTrigger, setDeleteTrigger] = useState(false);
 
-
-  const {monthlysCompleted, setMonthlysCompleted, user, monthlyGoal, setMonthlyGoal} = useContext(CurrentContext);
+  const {
+    monthlysCompleted,
+    setMonthlysCompleted,
+    user,
+    monthlyGoal,
+    setMonthlyGoal,
+  } = useContext(CurrentContext);
 
   let date = new Date();
   let month = date.getMonth();
   let day = date.getDate();
-  let weekday = date.getDay();
   let year = date.getFullYear();
-
-  let first = date.getDate() - date.getDay();
-  let sundayDate = format(new Date(date.setDate(first)), "do");
 
   const whichMonth = [
     "January",
@@ -50,7 +51,7 @@ const MonthlyGoals = () => {
     }
   }, [month]);
 
-    ////----- SUBMIT TO MONGO
+  ////----- SUBMIT TO MONGO
 
   useEffect(() => {
     if (submitTrigger && monthlyGoal) {
@@ -75,9 +76,9 @@ const MonthlyGoals = () => {
     }
   }, [submitTrigger]);
 
-   ////----- COMPLETE && update tasks in Mongo
+  ////----- COMPLETE && update tasks in Mongo
 
-   useEffect(() => {
+  useEffect(() => {
     if (completeTrigger) {
       const monthlysCompletedForPatch = monthlysCompleted + 1;
       fetch(`/get-user/monthlys-completed/${user.email}`, {
@@ -96,7 +97,7 @@ const MonthlyGoals = () => {
           setCompleteTrigger(false);
           setDeleteTrigger(true);
           setMonthlyGoal("");
-          setMonthlyUpdate("")
+          setMonthlyUpdate("");
           console.log("monthly completed");
         })
         .catch((e) => {
@@ -105,32 +106,32 @@ const MonthlyGoals = () => {
     }
   }, [completeTrigger]);
 
-    ////----- DELETE/UPDATE ON MONGO
+  ////----- DELETE/UPDATE ON MONGO
 
-    useEffect(() => {
-      if (deleteTrigger) {
-        fetch(`/get-user/monthly-to-do/${user.email}`, {
-          method: "PATCH",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            monthlyToDo: "",
-          }),
+  useEffect(() => {
+    if (deleteTrigger) {
+      fetch(`/get-user/monthly-to-do/${user.email}`, {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          monthlyToDo: "",
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("monthly updated (deleted)");
+          setDeleteTrigger(false);
         })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log("monthly updated (deleted)");
-            setDeleteTrigger(false);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      }
-    }, [deleteTrigger]);
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [deleteTrigger]);
 
-      ////-----HANDLESUBMIT
+  ////-----HANDLESUBMIT
 
   const handleSubmitMonthly = (e) => {
     e.preventDefault();
@@ -153,7 +154,6 @@ const MonthlyGoals = () => {
 
   const handleComplete = () => {
     setCompleteTrigger(true);
-   
   };
 
   ////---- UPDATE
@@ -167,8 +167,8 @@ const MonthlyGoals = () => {
       <MonthlyContainer>
         <MonthlyHeader>
           <PopUpHeader>
-        <MonthlyPopUp />
-          <h2>your {whichMonth[month].toLowerCase() + " " + year} goal:</h2>
+            <MonthlyPopUp />
+            <h2>your {whichMonth[month].toLowerCase() + " " + year} goal:</h2>
           </PopUpHeader>
           <MonthlyDays>days left to complete: {daysLeftMonth}</MonthlyDays>
         </MonthlyHeader>
@@ -195,7 +195,7 @@ const MonthlyGoals = () => {
               >
                 delete
               </button>
-              
+
               <button
                 onClick={() => {
                   handleComplete();
@@ -218,30 +218,29 @@ const MonthlyGoalContainer = styled.div`
 `;
 
 const GoalInput = styled.input`
-width: 15vw;
-border-radius: 5px;
-padding: 0.5vw;
-font-size: 0.9em;
+  width: 15vw;
+  border-radius: 5px;
+  padding: 0.5vw;
+  font-size: 0.9em;
 `;
 
 const GoalButton = styled.button`
-padding: 5px 10px 5px 10px;
-border-radius: 5px;
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
 `;
 
 const MonthlyForm = styled.form`
-display: flex;
-gap: 1vw;
+  display: flex;
+  gap: 1vw;
 `;
 
 const PopUpHeader = styled.div`
-display: flex;
-align-items: baseline;
-gap: 1vw;
-`
-
-const MonthlyHeader = styled.div`
+  display: flex;
+  align-items: baseline;
+  gap: 1vw;
 `;
+
+const MonthlyHeader = styled.div``;
 
 const MonthlyContainer = styled.div`
   display: flex;
