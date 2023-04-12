@@ -18,23 +18,24 @@ const CalendarContainer = styled.div`
   margin-top: 4vh;
   background-color: ${({ theme }) => theme.header};
   padding: 1vw;
+  border: ${({ theme }) => theme.border};
   border-radius: 15px;
+
 
   .react-calendar__navigation {
     display: flex;
-    
+
   }
 
   .react-calendar button {
     padding: 0.5vw;
     margin: 0.25vw;
     border-radius: 5px;
+    border: none;
   }
 
- 
   .react-calendar__navigation__label {
     font-weight: bold;
-    
   }
 
   .react-calendar__navigation__arrow {
@@ -43,19 +44,16 @@ const CalendarContainer = styled.div`
 
   .react-calendar__month-view__weekdays {
     text-align: center;
-    
   }
 
   .react-calendar__month-view__days {
     display: grid !important;
     grid-template-columns: 14.2% 14.2% 14.2% 14.2% 14.2% 14.2% 14.2%;
     padding-top: 1vw;
-    
 
     .react-calendar__tile {
       max-width: initial !important;
       padding: 1vw;
-      
     }
   }
 
@@ -66,7 +64,6 @@ const CalendarContainer = styled.div`
   .react-calendar__tile--range {
     box-shadow: 0 0 4px 1.5px gray;
     padding: 5px;
-    
   }
 `;
 

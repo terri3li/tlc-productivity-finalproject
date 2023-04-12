@@ -18,12 +18,12 @@ const CurrentProvider = ({ children }) => {
   const [weeklyGoal, setWeeklyGoal] = useState("");
   //below is used to set up & link auth0 to mongodb
   const [userStatusResponse, setUserStatusResponse] = useState();
-  const [mongoUser, setMongoUser] = useState(null); 
+  const [mongoUser, setMongoUser] = useState(null);
   const { user, isAuthenticated, isLoading } = useAuth0();
   const [mounted, setMounted] = useState(null);
-  const [fortune, setFortune] = useState("")
 
   const [points, setPoints] = useState(0);
+ 
 
   const [rewards, setRewards] = useState(["Snack time"]);
 
@@ -69,30 +69,27 @@ const CurrentProvider = ({ children }) => {
           rewards: [rewards],
           tasksCompleted: tasksCompleted,
           weeklysCompleted: weeklysCompleted,
-          monthlysCompleted, monthlysCompleted,
-      
+          monthlysCompleted,
+          monthlysCompleted,
         }),
       })
         .then((res) => res.json())
         .then((data) => {
-         
-            setMongoUser(data); 
+          setMongoUser(data);
         })
         .catch((e) => {
           console.log(e);
         });
     } else {
-    
       if (isAuthenticated) {
         fetch(`/get-user/${user.email}`)
           .then((res) => res.json())
           .then((data) => {
-            console.log(data.data)
-            setToDos(data.data.toDos)
-            setRewards(data.data.rewards)
-            setMonthlyGoal(data.data.monthlyToDo)
-            setWeeklyGoal(data.data.weeklyToDo)
-         
+            console.log(data.data);
+            setToDos(data.data.toDos);
+            setRewards(data.data.rewards);
+            setMonthlyGoal(data.data.monthlyToDo);
+            setWeeklyGoal(data.data.weeklyToDo);
           })
           .catch((e) => {
             console.log(e);
@@ -104,8 +101,6 @@ const CurrentProvider = ({ children }) => {
   if (isLoading) {
     return <Spinner size={90} />;
   }
-
-
 
   return (
     <>
@@ -133,13 +128,12 @@ const CurrentProvider = ({ children }) => {
           setMonthlysCompleted,
           points,
           setPoints,
-        
-          fortune,
-          setFortune,
+
           monthlyGoal,
           setMonthlyGoal,
           weeklyGoal,
-          setWeeklyGoal
+          setWeeklyGoal,
+     
         }}
       >
         {children}

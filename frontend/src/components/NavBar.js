@@ -5,7 +5,6 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FiHome } from "react-icons/fi";
 import { VscAccount } from "react-icons/vsc";
-import { HiOutlineSparkles } from "react-icons/hi2";
 import { CurrentContext } from "../CurrentContext";
 import Logout from "./Logout";
 

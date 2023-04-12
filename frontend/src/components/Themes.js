@@ -10,19 +10,13 @@ export const darkTheme = {
   text: '#f1f1f1',
   border: 'solid 1px #F9FF9D',
   light: '#B8FFFE',
-  header: '#273746'
+  header: '#273746',
+  button: '#FFE8FE'
 };
 export const dustySunrise = {
-  body: '#C06C84',
+  body: '#993355',
   text: '#F8B195',
-  border: 'solid 2px #355C7D',
-  header: '#F67280'
-}
-
-export const moonlightBytes = { 
-  body: '#051e3d',
-  text: '#C4CAFF',
-  border: 'solid 1px #575656',
-  light: '#E6E6E6',
-  header: '#241149'
+  border: 'solid 2px #F67280',
+  header: '#355C7D ',
+  button: '#F4E1FF '
 }

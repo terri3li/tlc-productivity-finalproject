@@ -223,13 +223,12 @@ const ToDoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: solid 1px;
+  border: ${({ theme }) => theme.border};
   border-radius: 10px;
   padding: 1vw;
 `;
 
 const Title = styled.h2`
-  /* text-decoration: underline; */
 `;
 
 const List = styled.ul`

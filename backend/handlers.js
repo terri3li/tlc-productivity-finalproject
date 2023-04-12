@@ -59,11 +59,11 @@ const addUser = async (req, res) => {
       _id: uuidv4(),
       username: req.body.username,
       email: req.body.email,
-      toDos: req.body.toDos,
       rewards: req.body.rewards,
-      tasksCompleted: req.body.tasksCompleted,
+      toDos: req.body.toDos,
       monthlyToDo: req.body.monthlyToDo,
       weeklyToDo: req.body.weeklyToDo,
+      tasksCompleted: req.body.tasksCompleted,
       weeklysCompleted: req.body.weeklysCompleted,
       monthlysCompleted: req.body.monthlysCompleted,
      

@@ -16,8 +16,13 @@ const Profile = () => {
   const [reward, setReward] = useState("");
   const [rewardsTrigger, setRewardsTrigger] = useState(false);
   const navigate = useNavigate();
+  
+  const [hideSquare1, setHideSquare1] = useState(false);
+  const [hideSquare2, setHideSquare2] = useState(false);
+  const [hideSquare3, setHideSquare3] = useState(false);
+  const [hideSquare4, setHideSquare4] = useState(false);
+
   let level = 0;
-  let hideSquare1 = false;
 
   const {
     rewards,
@@ -73,6 +78,18 @@ const Profile = () => {
           mongoUser.data.weeklysCompleted * 50 +
           mongoUser.data.monthlysCompleted * 250
       );
+      if (mongoUser.data.weeklysCompleted >= 1) {
+        setHideSquare1(true);
+      }
+      if (mongoUser.data.monthlysCompleted >= 1) {
+        setHideSquare2(true);
+      }
+      if (mongoUser.data.tasksCompleted >= 10) {
+        setHideSquare3(true);
+      }
+      // if (mongoUser.data.weeklysCompleted > 1) {
+      //   setHideSquare4(true);
+      // }
     }
   }, [mongoUser]);
 
@@ -144,7 +161,7 @@ const Profile = () => {
 
             <AchievementsHeader>
               <AchievementsPopUp />
-              Achievements: (stretch - incomplete)
+              Achievements (stretch - unfinished):
             </AchievementsHeader>
             <BadgeFlex>
               <BadgeContainer>
@@ -160,17 +177,35 @@ const Profile = () => {
 
               <BadgeContainer>
                 <Calendar2 size={90} />
-                <HideSqaure2>?</HideSqaure2>
+                <HideSqaure2
+                  style={{
+                    visibility: hideSquare2 ? "hidden" : "visible",
+                  }}
+                >
+                  ?
+                </HideSqaure2>
               </BadgeContainer>
 
               <BadgeContainer>
                 <Checkmark size={90} />
-                <HideSqaure3>?</HideSqaure3>
+                <HideSqaure3
+                  style={{
+                    visibility: hideSquare3 ? "hidden" : "visible",
+                  }}
+                >
+                  ?
+                </HideSqaure3>
               </BadgeContainer>
 
               <BadgeContainer>
                 <CoffeeCup size={90} />
-                <HideSqaure4>?</HideSqaure4>
+                <HideSqaure4
+                  style={{
+                    visibility: hideSquare4 ? "hidden" : "visible",
+                  }}
+                >
+                  ?
+                </HideSqaure4>
               </BadgeContainer>
             </BadgeFlex>
           </RightContainer>

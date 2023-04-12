@@ -17,7 +17,7 @@ const Settings = ({ theme, setTheme, font, setFont }) => {
       <ThemeContainer>
         <Theme onClick={() => setTheme(lightTheme)}>Light</Theme>
          <Theme onClick={() => setTheme(darkTheme)}>Dark</Theme>
-        <Theme onClick={() => setTheme(moonlightBytes)}>MoonLight Bytes</Theme>
+       
         <Theme onClick={() => setTheme(dustySunrise)}>Dusty Sunrise</Theme>
       </ThemeContainer>
 

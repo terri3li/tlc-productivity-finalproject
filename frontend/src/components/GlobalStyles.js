@@ -14,6 +14,7 @@ export default createGlobalStyle`
 
 button {
   cursor: pointer;
+  color: ${({ theme }) => theme.button};
 }
 
 input {
