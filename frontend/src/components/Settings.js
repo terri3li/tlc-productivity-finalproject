@@ -1,7 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { lightTheme, darkTheme, dustySunrise, moonlightBytes } from "./Themes";
+import {
+  lightTheme,
+  darkTheme,
+  dustySunrise,
+  mixTape,
+  serenityNow,
+} from "./Themes";
 import { CurrentContext } from "../CurrentContext";
 
 const Settings = ({ theme, setTheme, font, setFont }) => {
@@ -24,6 +30,14 @@ const Settings = ({ theme, setTheme, font, setFont }) => {
         <Theme onClick={() => setTheme(darkTheme)}>Dark</Theme>
         <Theme enabled={enabled} onClick={() => setTheme(dustySunrise)}>
           Dusty Sunrise
+        </Theme>
+
+        <Theme enabled={enabled} onClick={() => setTheme(mixTape)}>
+          Mix Tape
+        </Theme>
+
+        <Theme enabled={enabled} onClick={() => setTheme(serenityNow)}>
+          Serenity Now
         </Theme>
       </ThemeContainer>
 
@@ -58,7 +72,7 @@ const BackButton = styled.button`
 const ThemeContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 40vw;
+  width: 50vw;
   height: 9vh;
 `;
 

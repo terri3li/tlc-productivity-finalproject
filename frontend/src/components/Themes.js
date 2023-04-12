@@ -20,3 +20,19 @@ export const dustySunrise = {
   header: '#355C7D ',
   button: '#F4E1FF '
 }
+
+export const mixTape = {
+  body: '#5a3d2b',
+  text: '#ffecb4',
+  border: 'solid 2px #75c8ae',
+  header: '#A23E50 ',
+  button: '#f4a127 '
+}
+
+export const serenityNow = {
+  body: '#DDD4C6  ',
+  text: '#780E4B ',
+  border: 'solid 2px #dca8ad',
+  header: '#B4A599 ',
+  button: '#016296'
+}
