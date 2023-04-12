@@ -13,7 +13,7 @@ Google Auth0 Login
 - These points are tracked on the profile page and used to unlock achievement badges and site themes
 
 Rewards/Treat Yourself
-- On the main page there is an option to hit a 'Treat Yourself' button. This pulls a random value from an array of rewards. Personalized rewards can be plugged into the array on the Profile page to give the user a more personalized experience
+- On the main page there is an option to hit a 'Treat Yourself' button. This pulls a random value from an array of rewards. Rewards can be plugged into the array on the Profile page to give the user a more personalized experience
 
 Mongo Database: 
 - Info from Auth0 Login is used to create a Mongo user which holds all of the current daily, weekly and monthly to do tasks alongside the users custom rewards and task completed count
