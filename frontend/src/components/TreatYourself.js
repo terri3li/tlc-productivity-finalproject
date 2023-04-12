@@ -18,8 +18,10 @@ const TreatYourself = () => {
         ) : (
           
           <Container>
-            <RewardsPopUp />
+            <PopUpHeader>
           Getting stuff done?
+            <RewardsPopUp />
+            </PopUpHeader>
           <TreatButton
     
             onClick={() => {
@@ -47,6 +49,7 @@ const TreatButton = styled.button`
   margin: 20px;
   border-radius: 10px;
   font-weight: bold;
+  font-size: 0.9em;
 `;
 
 const Container = styled.div`
@@ -58,5 +61,13 @@ const Container = styled.div`
   border: ${({ theme }) => theme.border};
   border-radius: 10px;
 `;
+
+const PopUpHeader = styled.div`
+display: flex;
+align-items: baseline;
+gap: 1vw;
+justify-content: center;
+font-size: 1em;
+`
 
 export default TreatYourself;

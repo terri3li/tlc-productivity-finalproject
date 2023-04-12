@@ -10,9 +10,7 @@ const Logout = () => {
     <LogOutButton
       onClick={() => {
         logout({ logoutParams: { returnTo: window.location.origin } });
-        window.localStorage.removeItem(
-          "loggedInUser"
-        );      
+          
       }
       }
     >

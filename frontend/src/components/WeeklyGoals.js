@@ -155,12 +155,14 @@ const WeeklyGoals = () => {
   return (
     <GoalContainer>
       <WeeklyContainer>
-        <WeeklyPopUp />
         <WeeklyHeader>
+        <PopUpHeader>
+        <WeeklyPopUp />
           <h2>
             goal for the week of sunday,{" "}
             {whichMonth[month].toLowerCase() + " " + sundayDate}:{" "}
           </h2>
+          </PopUpHeader>
           <WeeklyDays> days left to complete: {daysLeftWeek}</WeeklyDays>
         </WeeklyHeader>
         <WeeklyForm onSubmit={handleSubmitWeekly}>
@@ -212,6 +214,12 @@ const WeeklyForm = styled.form`
   display: flex;
   gap: 1vw;
 `;
+
+const PopUpHeader = styled.div`
+display: flex;
+align-items: baseline;
+gap: 1vw;
+`
 
 const WeeklyHeader = styled.div``;
 

@@ -1,20 +1,16 @@
 import Popup from "reactjs-popup";
 import styled from "styled-components";
 
-const MonthlyPopUp = () => {
+const AchievementsPopUp = () => {
   return (
     <div>
       <StyledPopup trigger={<PopUpButton> ? </PopUpButton>} modal nested>
         {(close) => (
           <PopUpContainer>
             <PopUpInfo>
-              <div> Monthly To Dos: </div>
-              You get one of these each month & completing will earn you 250 pts
-              <div>
-              
-                Tip: It's best to set a bigger to do item here that is going to
-                take some time to complete
-              </div>
+              <div>Achievements:</div>
+              Continue to use the site and complete to do's to unlock achievement badges along the way!
+              <div></div>
             </PopUpInfo>
             <div>
               <button onClick={() => close()}>Close</button>
@@ -52,4 +48,4 @@ const PopUpButton = styled.button`
   border-radius: 10px;
 `;
 
-export default MonthlyPopUp;
+export default AchievementsPopUp;

@@ -4,17 +4,21 @@ const express = require("express");
 const morgan = require("morgan");
 const { google } = require("googleapis");
 const { OAuth2 } = google.auth;
-const OAuth2Client = new OAuth2(
-  "",
-  ""
-);
-
-
-
+const OAuth2Client = new OAuth2("", "");
 
 const port = 5678;
 
-const { addUser, checkForUser, updateRewards, updateToDos, updateTasks, updateMonthlys, updateWeeklys, updateMonthlyToDo, updateWeeklyToDo, updatePoints } = require("./handlers");
+const {
+  addUser,
+  checkForUser,
+  updateRewards,
+  updateToDos,
+  updateTasks,
+  updateMonthlys,
+  updateWeeklys,
+  updateMonthlyToDo,
+  updateWeeklyToDo,
+} = require("./handlers");
 
 express()
   .use(morgan("tiny"))
@@ -28,8 +32,6 @@ express()
   .post("/new-user", addUser)
 
   .patch("/get-user/rewards/:userEmail", updateRewards)
-  .patch("/get-user/points/:userEmail", updatePoints)
-
 
   .patch("/get-user/toDos/:userEmail", updateToDos)
   .patch("/get-user/tasks-completed/:userEmail", updateTasks)
@@ -40,8 +42,6 @@ express()
   .patch("/get-user/monthly-to-do/:userEmail", updateMonthlyToDo)
   .patch("/get-user/weekly-to-do/:userEmail", updateWeeklyToDo)
 
-
-  
   // catch all
   .get("*", (req, res) => {
     res.status(404).json({
@@ -49,6 +49,5 @@ express()
       message: "This is obviously not what you are looking for.",
     });
   })
-
 
   .listen(port, () => console.log(`Listening on port ${port}`));

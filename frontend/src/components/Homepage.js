@@ -12,17 +12,19 @@ import HomeCalendar from "./Calendar";
 import WeeklyGoals from "./WeeklyGoals";
 import Loading from "./Loading";
 
+
 const Homepage = () => {
   const { user, isAuthenticated, mongoUser } = useContext(CurrentContext);
 
   return (
     <>
+    <Header />
     {!mongoUser ? (
-      <Loading />
+      <div></div>
       ) : (
         
     <PageContainer>
-      <Header />
+      <></>
 {!isAuthenticated ? (
   <div>
   </div> ) : (

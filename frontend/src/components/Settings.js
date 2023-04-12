@@ -6,12 +6,17 @@ import { lightTheme, darkTheme, dustySunrise, moonlightBytes } from "./Themes";
 const Settings = ({ theme, setTheme, font, setFont }) => {
   const navigate = useNavigate();
 
+  window.localStorage.setItem(
+    "theme",
+    JSON.stringify(theme)
+    );
+
   return (
     <PageContainer>
       <SelectTheme>Select Site Theme:</SelectTheme>
       <ThemeContainer>
         <Theme onClick={() => setTheme(lightTheme)}>Light</Theme>
-        <Theme onClick={() => setTheme(darkTheme)}>Dark</Theme>
+         <Theme onClick={() => setTheme(darkTheme)}>Dark</Theme>
         <Theme onClick={() => setTheme(moonlightBytes)}>MoonLight Bytes</Theme>
         <Theme onClick={() => setTheme(dustySunrise)}>Dusty Sunrise</Theme>
       </ThemeContainer>

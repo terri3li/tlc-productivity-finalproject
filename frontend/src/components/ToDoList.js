@@ -16,11 +16,6 @@ const ToDoList = () => {
     user,
     tasksCompleted,
     setTasksCompleted,
-    recentTasks,
-    setRecentTasks,
-    completed,
-    setCompleted,
-    mongoUser,
     toDos,
     setToDos,
   } = useContext(CurrentContext);
@@ -164,8 +159,10 @@ const ToDoList = () => {
 
   return (
     <ToDoContainer>
-      <ToDoPopUp/>
+      <PopUpHeader>
       <Title>To Do List</Title>
+      <ToDoPopUp/>
+      </PopUpHeader>
       <ToDoForm onSubmit={handleSubmit}>
         <ToDoInput
           type="text"
@@ -184,7 +181,7 @@ const ToDoList = () => {
       <List>
         {toDos.map((item) => {
           return (
-            <ItemButtonContainer>
+            <ItemButtonContainer key={item.id}>
             <ItemContainer key={item.id}>
               <ToDoItem key={item.id}>{item.toDo}</ToDoItem>
               </ItemContainer>
@@ -232,7 +229,7 @@ const ToDoContainer = styled.div`
 `;
 
 const Title = styled.h2`
-  text-decoration: underline;
+  /* text-decoration: underline; */
 `;
 
 const List = styled.ul`
@@ -246,6 +243,12 @@ const ToDoForm = styled.form`
   display: flex;
   gap: 1vw;
 `;
+
+const PopUpHeader = styled.div`
+display: flex;
+align-items: baseline;
+gap: 1vw;
+`
 
 const ToDoInput = styled.input`
   width: 20vw;

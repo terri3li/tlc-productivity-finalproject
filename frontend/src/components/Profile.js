@@ -9,60 +9,40 @@ import {
 import { CgGirl } from "react-icons/cg";
 import Loading from "./Loading";
 import ProfileRewardsPopUp from "./popups/ProfileRewardsPopUp";
+import AchievementsPopUp from "./popups/AchievementsPopUp";
 import { CurrentContext } from "../CurrentContext";
 
 const Profile = () => {
   const [reward, setReward] = useState("");
   const [rewardsTrigger, setRewardsTrigger] = useState(false);
-  const [pointsTrigger, setPointsTrigger] = useState(false);
   const navigate = useNavigate();
   let level = 0;
+  let hideSquare1 = false;
 
   const {
     rewards,
     setRewards,
     points,
     setPoints,
-
     user,
-    tasksCompleted,
-    weeklysCompleted,
-    monthlysCompleted,
     mongoUser,
     setMongoUser,
   } = useContext(CurrentContext);
-
-  // console.log(monthlysCompleted)
 
   const handleClick = (e) => {
     navigate("/settings");
   };
 
   useEffect(() => {
-    if (pointsTrigger) {
-      fetch(`/get-user/points/${user.email}`, {
-        method: "PATCH",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          points: points,
-        }),
+    fetch(`/get-user/${user.email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setMongoUser(data);
       })
-        .then((res) => res.json())
-        .then((data) => {
-
-
-          
-          setPointsTrigger(false);
-          console.log("points updated");
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-  }, [pointsTrigger]);
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   useEffect(() => {
     if (rewardsTrigger) {
@@ -93,7 +73,6 @@ const Profile = () => {
           mongoUser.data.weeklysCompleted * 50 +
           mongoUser.data.monthlysCompleted * 250
       );
-      setPointsTrigger(true);
     }
   }, [mongoUser]);
 
@@ -110,32 +89,6 @@ const Profile = () => {
     setReward(e.target.value);
   };
 
-  // useEffect(() => {
-
-  //   return(
-
-  //     <>
-  //     </>
-  //   )
-  // }, [])
-
-  //   let hideSquare1 = false;
-
-  //   if (tasksCompleted >= 10) {
-  //     let hideSquare1 = true;
-  //   }
-
-  //   if (tasksCompleted >= 15) {
-  //     const hideSquare2 = true;
-  //   }
-
-  // if (tasksCompleted >= 10) {
-  //   const hideSquare1 = true;
-  // }
-
-  // if (tasksCompleted >= 10) {
-  //   const hideSquare1 = true;
-  // }
   if (points >= 50 && points < 125) {
     level = 1;
   } else if (points >= 125 && points < 225) {
@@ -144,9 +97,12 @@ const Profile = () => {
     level = 3;
   } else if (points >= 350 && points < 500) {
     level = 4;
-  } else {
+  } else if (points > 500) {
     level = 5;
+  } else {
+    level = 0;
   }
+
   return (
     <>
       {!mongoUser ? (
@@ -157,7 +113,7 @@ const Profile = () => {
             <AddAvatar />
             <Username>@{mongoUser.data.username}</Username>
             <div>level {level} </div>
-            <div>points: {mongoUser.data.points}</div>
+            <div>points: {points}</div>
             <div>to do's completed: {mongoUser.data.tasksCompleted}</div>
             <div>weeklys completed: {mongoUser.data.weeklysCompleted}</div>
             <div>monthlys completed: {mongoUser.data.monthlysCompleted}</div>
@@ -166,9 +122,11 @@ const Profile = () => {
           </UserInfoContainer>
 
           <RightContainer>
-            Rewards:
-            <RewardContainer>
+            <RewardsHeader>
               <ProfileRewardsPopUp />
+              Rewards:
+            </RewardsHeader>
+            <RewardContainer>
               <RewardForm onSubmit={handleSubmit}>
                 <InputAndButton>
                   <RewardInput
@@ -183,14 +141,18 @@ const Profile = () => {
                 </InputAndButton>
               </RewardForm>
             </RewardContainer>
-            Achievements:
+
+            <AchievementsHeader>
+              <AchievementsPopUp />
+              Achievements: (stretch - incomplete)
+            </AchievementsHeader>
             <BadgeFlex>
               <BadgeContainer>
                 <Calendar1 size={90} />
                 <HideSqaure1
-                // style={{
-                //   visibility: hideSquare1 ? "hidden" : "visible",
-                // }}
+                  style={{
+                    visibility: hideSquare1 ? "hidden" : "visible",
+                  }}
                 >
                   ?
                 </HideSqaure1>
@@ -222,6 +184,16 @@ const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5vh;
+`;
+
+const RewardsHeader = styled.div`
+  display: flex;
+  gap: 1vw;
+`;
+
+const AchievementsHeader = styled.div`
+  display: flex;
+  gap: 1vw;
 `;
 
 const RewardContainer = styled.div`
@@ -374,19 +346,21 @@ const RewardInput = styled.input`
   width: 30vw;
   border-radius: 5px;
   padding: 0.5vw;
+  font-size: 0.9em;
 `;
 
 const RewardButton = styled.button`
   margin-bottom: 5vh;
-  width: 25vw;
+  width: 20vw;
   border-radius: 5px;
+  font-size: 0.9em;
 `;
 
 const InputAndButton = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 1vh;
+  gap: 2vh;
   margin-top: 2vh;
 `;
 

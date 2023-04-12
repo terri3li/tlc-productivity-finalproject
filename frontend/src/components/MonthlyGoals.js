@@ -166,9 +166,11 @@ const MonthlyGoals = () => {
   return (
     <GoalContainer>
       <MonthlyContainer>
-        <MonthlyPopUp />
         <MonthlyHeader>
+          <PopUpHeader>
+        <MonthlyPopUp />
           <h2>your {whichMonth[month].toLowerCase() + " " + year} goal:</h2>
+          </PopUpHeader>
           <MonthlyDays>days left to complete: {daysLeftMonth}</MonthlyDays>
         </MonthlyHeader>
         <MonthlyForm onSubmit={handleSubmitMonthly}>
@@ -233,21 +235,14 @@ display: flex;
 gap: 1vw;
 `;
 
-const WeeklyHeader = styled.div``;
+const PopUpHeader = styled.div`
+display: flex;
+align-items: baseline;
+gap: 1vw;
+`
 
-const WeeklyContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  border: ${({ theme }) => theme.border};
-  border-radius: 10px;
-  padding: 8px 14px 24px 14px;
+const MonthlyHeader = styled.div`
 `;
-
-const WeeklyDays = styled.h4`
-  color: ${({ theme }) => theme.light};
-`;
-
-const MonthlyHeader = styled.div``;
 
 const MonthlyContainer = styled.div`
   display: flex;

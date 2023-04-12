@@ -14,7 +14,7 @@ const CurrentProvider = ({ children }) => {
   const [toDos, setToDos] = useState([]);
   const [recentTasks, setRecentTasks] = useState([]);
   const [completed, setCompleted] = useState(false);
-  const [monthlyGoal, setMonthlyGoal] = useState(null);
+  const [monthlyGoal, setMonthlyGoal] = useState("");
   const [weeklyGoal, setWeeklyGoal] = useState("");
   //below is used to set up & link auth0 to mongodb
   const [userStatusResponse, setUserStatusResponse] = useState();
@@ -24,7 +24,7 @@ const CurrentProvider = ({ children }) => {
   const [fortune, setFortune] = useState("")
 
   const [points, setPoints] = useState(0);
-  // const [level, setLevel] = useState(0);
+
   const [rewards, setRewards] = useState(["Snack time"]);
 
   //not sure i'll need the time here, check later
@@ -70,23 +70,19 @@ const CurrentProvider = ({ children }) => {
           tasksCompleted: tasksCompleted,
           weeklysCompleted: weeklysCompleted,
           monthlysCompleted, monthlysCompleted,
-          points: points,
-          // level: level
+      
         }),
       })
         .then((res) => res.json())
         .then((data) => {
-          window.localStorage.setItem(
-            "loggedInUser",
-            JSON.stringify(data.data)
-            );
+         
             setMongoUser(data); 
         })
         .catch((e) => {
           console.log(e);
         });
     } else {
-      //not sure localstorage is needed anymore, leaving for now 
+    
       if (isAuthenticated) {
         fetch(`/get-user/${user.email}`)
           .then((res) => res.json())
@@ -96,10 +92,7 @@ const CurrentProvider = ({ children }) => {
             setRewards(data.data.rewards)
             setMonthlyGoal(data.data.monthlyToDo)
             setWeeklyGoal(data.data.weeklyToDo)
-            window.localStorage.setItem(
-              "rewards",
-              JSON.stringify(data.data.rewards)
-            );
+         
           })
           .catch((e) => {
             console.log(e);
@@ -140,8 +133,7 @@ const CurrentProvider = ({ children }) => {
           setMonthlysCompleted,
           points,
           setPoints,
-          // level,
-          // setLevel,
+        
           fortune,
           setFortune,
           monthlyGoal,

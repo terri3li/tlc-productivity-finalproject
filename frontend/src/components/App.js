@@ -5,7 +5,7 @@ import CurrentProvider from "../CurrentContext";
 import { ThemeProvider } from "styled-components";
 import Popup from "reactjs-popup";
 //// component imports
-import { lightTheme } from "./Themes";
+import { lightTheme, darkTheme } from "./Themes";
 import Homepage from "./Homepage";
 import Settings from "./Settings";
 import SignUp from "./SignUp";
@@ -13,8 +13,10 @@ import Profile from "./Profile";
 import NavBar from "./NavBar";
 
 const App = () => {
-  const [theme, setTheme] = useState(lightTheme);
+  const [theme, setTheme] = useState(darkTheme);
   const [font, setFont] = useState("roboto mono");
+
+
 
   return (
     <CurrentProvider>

@@ -20,7 +20,7 @@ const Header = () => {
   }
 
   return (
-    <>
+    <Container>
       {!isAuthenticated ? (
         <Greeting>Good {timeOfDay}, sign in to get productive with us</Greeting>
       ) : (
@@ -31,7 +31,7 @@ const Header = () => {
           </Greeting>
         </>
       )}
-    </>
+    </Container>
   );
 };
 
@@ -42,5 +42,9 @@ const Greeting = styled.h1`
   width: 65vw;
   border-radius: 10px;
 `;
+
+const Container = styled.div`
+display: flex;
+justify-content: center`;
 
 export default Header;
