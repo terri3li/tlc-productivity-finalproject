@@ -14,15 +14,16 @@ import { CurrentContext } from "../CurrentContext";
 const Profile = () => {
   const [reward, setReward] = useState("");
   const [rewardsTrigger, setRewardsTrigger] = useState(false);
+  const [pointsTrigger, setPointsTrigger] = useState(false);
   const navigate = useNavigate();
+  let level = 0;
 
   const {
     rewards,
     setRewards,
     points,
     setPoints,
-    level,
-    setLevel,
+
     user,
     tasksCompleted,
     weeklysCompleted,
@@ -38,6 +39,32 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    if (pointsTrigger) {
+      fetch(`/get-user/points/${user.email}`, {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          points: points,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+
+
+          
+          setPointsTrigger(false);
+          console.log("points updated");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [pointsTrigger]);
+
+  useEffect(() => {
     if (rewardsTrigger) {
       fetch(`/get-user/rewards/${user.email}`, {
         method: "PATCH",
@@ -51,20 +78,28 @@ const Profile = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-       
           setRewardsTrigger(false);
         })
         .catch((e) => {
           console.log(e);
         });
-  
     }
   }, [rewardsTrigger]);
+
+  useEffect(() => {
+    if (mongoUser) {
+      setPoints(
+        mongoUser.data.tasksCompleted * 5 +
+          mongoUser.data.weeklysCompleted * 50 +
+          mongoUser.data.monthlysCompleted * 250
+      );
+      setPointsTrigger(true);
+    }
+  }, [mongoUser]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (reward !== "") {
-    
       setRewards([...rewards, reward]);
       setReward("");
       setRewardsTrigger(true);
@@ -74,22 +109,6 @@ const Profile = () => {
   const updateReward = (e) => {
     setReward(e.target.value);
   };
-
-  // let points =
-  // tasksCompleted * 5 + weeklysCompleted * 50 + monthlysCompleted * 250;
-  // let level = 0;
-
-  // if (points >= 50 && points < 125) {
-  //   level = 1;
-  // } else if (points >= 125 && points < 225) {
-  //   level = 2;
-  // } else if (points >= 225 && points < 350) {
-  //   level = 3;
-  // } else if (points >= 350 && points < 500) {
-  //   level = 4;
-  // } else {
-  //   level = 5;
-  // }
 
   // useEffect(() => {
 
@@ -117,7 +136,17 @@ const Profile = () => {
   // if (tasksCompleted >= 10) {
   //   const hideSquare1 = true;
   // }
-  console.log(mongoUser);
+  if (points >= 50 && points < 125) {
+    level = 1;
+  } else if (points >= 125 && points < 225) {
+    level = 2;
+  } else if (points >= 225 && points < 350) {
+    level = 3;
+  } else if (points >= 350 && points < 500) {
+    level = 4;
+  } else {
+    level = 5;
+  }
   return (
     <>
       {!mongoUser ? (
@@ -127,7 +156,7 @@ const Profile = () => {
           <UserInfoContainer>
             <AddAvatar />
             <Username>@{mongoUser.data.username}</Username>
-            <div>level {mongoUser.data.level} </div>
+            <div>level {level} </div>
             <div>points: {mongoUser.data.points}</div>
             <div>to do's completed: {mongoUser.data.tasksCompleted}</div>
             <div>weeklys completed: {mongoUser.data.weeklysCompleted}</div>

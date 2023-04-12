@@ -24,7 +24,7 @@ const CurrentProvider = ({ children }) => {
   const [fortune, setFortune] = useState("")
 
   const [points, setPoints] = useState(0);
-  const [level, setLevel] = useState(0);
+  // const [level, setLevel] = useState(0);
   const [rewards, setRewards] = useState(["Snack time"]);
 
   //not sure i'll need the time here, check later
@@ -71,7 +71,7 @@ const CurrentProvider = ({ children }) => {
           weeklysCompleted: weeklysCompleted,
           monthlysCompleted, monthlysCompleted,
           points: points,
-          level: level
+          // level: level
         }),
       })
         .then((res) => res.json())
@@ -140,8 +140,8 @@ const CurrentProvider = ({ children }) => {
           setMonthlysCompleted,
           points,
           setPoints,
-          level,
-          setLevel,
+          // level,
+          // setLevel,
           fortune,
           setFortune,
           monthlyGoal,

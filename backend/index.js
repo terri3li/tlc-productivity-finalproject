@@ -14,7 +14,7 @@ const OAuth2Client = new OAuth2(
 
 const port = 5678;
 
-const { addUser, checkForUser, updateRewards, updateToDos, updateTasks, updateMonthlys, updateWeeklys, updateMonthlyToDo, updateWeeklyToDo } = require("./handlers");
+const { addUser, checkForUser, updateRewards, updateToDos, updateTasks, updateMonthlys, updateWeeklys, updateMonthlyToDo, updateWeeklyToDo, updatePoints } = require("./handlers");
 
 express()
   .use(morgan("tiny"))
@@ -28,6 +28,8 @@ express()
   .post("/new-user", addUser)
 
   .patch("/get-user/rewards/:userEmail", updateRewards)
+  .patch("/get-user/points/:userEmail", updatePoints)
+
 
   .patch("/get-user/toDos/:userEmail", updateToDos)
   .patch("/get-user/tasks-completed/:userEmail", updateTasks)
