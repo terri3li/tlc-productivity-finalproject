@@ -3,7 +3,7 @@ My Final Project for cb-wd-23 (Concordia Bootcamp)
 
 **A Gamified To-Do List Tracker**
 
-Project features: 
+**Project features:** 
 
 Google Auth0 Login
 - Site designed to either retrieve information or create a new user upon Login
@@ -20,7 +20,7 @@ Mongo Database:
 - This task completed count is used to calculate points and levels on the frontend
 
 Calendar: 
-- Currently no functionality, finding a free API to use wasn't successful so there is currently a react calendar built for reference 
+- Finding a free API to use wasn't successful so there is currently a react calendar built for reference 
 
 Theme Toggle: 
 - Colored theme modes including a Light and Dark mode are available on the Settings page
