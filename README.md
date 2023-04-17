@@ -31,4 +31,4 @@ Clock & Header:
 **Stretch/To Do (yes, the irony):** 
 Below is a shot from the to do list items stored in my personal account when I log in... which just so happen to be the remaining work left for this project. 
 
-![sample_todo](sampletodo.png)
+![sample_todo](stretchsampletodo.png)
