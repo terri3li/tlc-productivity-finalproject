@@ -13,17 +13,22 @@ Google Auth0 Login
 - These points are tracked on the profile page and used to unlock achievement badges and site themes
 
 Rewards/Treat Yourself
-- On the main page there is an option to hit a 'Treat Yourself' button. This pulls a random value from an array of rewards. Rewards can be plugged into the array on the Profile page to give the user a more personalized experience
+- On the main page there is an option to hit a 'Treat Yourself' button. This pulls a random value from an array of rewards. Rewards can be plugged into the array on the Profile page to give the user a more personalized experience. 
 
 Mongo Database: 
 - Info from Auth0 Login is used to create a Mongo user which holds all of the current daily, weekly and monthly to do tasks alongside the users custom rewards and task completed count
 - This task completed count is used to calculate points and levels on the frontend
 
 Calendar: 
-- Finding a free API to use wasn't successful so there is currently a react calendar built for reference 
+- Currently a calendar built for reference w/ plans to integrate either the google calendar api or add functionality to schedule events 
 
 Theme Toggle: 
-- Colored theme modes including a Light and Dark mode are available on the Settings page
+- Colored theme modes (currently 5 themes) including a Light and Dark mode are available on the Settings page
 
 Clock & Header: 
 - Using the time and information from Auth0 to create a personalized greeting for the user 
+
+**Stretch/To Do (yes, the irony):** 
+Below is a shot from the to do list items stored in my personal account when I log in... which just so happen to be the remaining work left for this project. 
+
+![sample_todo](sampletodo.png)

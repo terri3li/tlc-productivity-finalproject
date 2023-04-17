@@ -53,6 +53,7 @@ const MainContainer = styled.div`
   gap: 3vw;
   margin-right: 5vw;
   margin-left: 5vw;
+  margin-bottom: 10vh;
 `;
 
 const PageContainer = styled.div`
