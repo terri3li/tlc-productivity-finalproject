@@ -9,15 +9,9 @@ const ToDoList = () => {
   const [submitTrigger, setSubmitTrigger] = useState(false);
   const [deleteTrigger, setDeleteTrigger] = useState(false);
   const [completeTrigger, setCompleteTrigger] = useState(false);
-  
 
-  const {
-    user,
-    tasksCompleted,
-    setTasksCompleted,
-    toDos,
-    setToDos,
-  } = useContext(CurrentContext);
+  const { user, tasksCompleted, setTasksCompleted, toDos, setToDos } =
+    useContext(CurrentContext);
 
   ////----- SUBMIT TO MONGO
 
@@ -145,7 +139,7 @@ const ToDoList = () => {
   ////------- HANDLECOMPLETE
 
   const handleComplete = (id) => {
-    setCompleteTrigger(true)
+    setCompleteTrigger(true);
     const deleteToDo = toDos.filter((toDo) => toDo.id !== id);
     setToDos([...deleteToDo]);
   };
@@ -159,8 +153,8 @@ const ToDoList = () => {
   return (
     <ToDoContainer>
       <PopUpHeader>
-      <Title>To Do List</Title>
-      <ToDoPopUp/>
+        <Title>To Do List</Title>
+        <ToDoPopUp />
       </PopUpHeader>
       <ToDoForm onSubmit={handleSubmit}>
         <ToDoInput
@@ -170,47 +164,43 @@ const ToDoList = () => {
           onChange={updateToDo}
         />
 
-        <EnterEditButton type="submit">{editToDo ? "Edit" : "Enter"}</EnterEditButton>
+        <EnterEditButton type="submit">
+          {editToDo ? "Edit" : "Enter"}
+        </EnterEditButton>
       </ToDoForm>
-
-
-
-
 
       <List>
         {toDos.map((item) => {
           return (
             <ItemButtonContainer key={item.id}>
-            <ItemContainer key={item.id}>
-              <ToDoItem key={item.id}>{item.toDo}</ToDoItem>
+              <ItemContainer key={item.id}>
+                <ToDoItem key={item.id}>{item.toDo}</ToDoItem>
               </ItemContainer>
               <ButtonContainer>
+                <ItemButton
+                  onClick={() => {
+                    handleEdit(item.id);
+                  }}
+                >
+                  edit
+                </ItemButton>
+                <ItemButton
+                  onClick={() => {
+                    handleDelete(item.id);
+                  }}
+                >
+                  delete
+                </ItemButton>
 
-              <ItemButton
-                onClick={() => {
-                  handleEdit(item.id);
-                }}
-              >
-                edit
-              </ItemButton>
-              <ItemButton
-                onClick={() => {
-                  handleDelete(item.id);
-                }}
-              >
-                delete
-              </ItemButton>
-              
-              <ItemButton
-                onClick={() => {
-                  handleComplete(item.id);
-                }}
-              >
-                complete
-              </ItemButton>
-                </ButtonContainer>
-</ItemButtonContainer>
-            
+                <ItemButton
+                  onClick={() => {
+                    handleComplete(item.id);
+                  }}
+                >
+                  complete
+                </ItemButton>
+              </ButtonContainer>
+            </ItemButtonContainer>
           );
         })}
       </List>
@@ -227,12 +217,11 @@ const ToDoContainer = styled.div`
   padding: 1vw;
 `;
 
-const Title = styled.h2`
-`;
+const Title = styled.h2``;
 
 const List = styled.ul`
-list-style-type: none;
-margin-right: 3vw;
+  list-style-type: none;
+  margin-right: 3vw;
 `;
 
 const ToDoItem = styled.span``;
@@ -243,44 +232,43 @@ const ToDoForm = styled.form`
 `;
 
 const PopUpHeader = styled.div`
-display: flex;
-align-items: baseline;
-gap: 1vw;
-`
+  display: flex;
+  align-items: baseline;
+  gap: 1vw;
+`;
 
 const ToDoInput = styled.input`
   width: 20vw;
   padding: 0.5vw;
   margin-bottom: 1vw;
   border-radius: 5px;
-  font-size:0.9em;
+  font-size: 0.9em;
 `;
 
 const EnterEditButton = styled.button`
-width: 5vw;
-height: 4.3vh;
-border-radius: 5px;
+  width: 5vw;
+  height: 4.3vh;
+  border-radius: 5px;
 `;
 
 const ItemContainer = styled.li`
-display: flex;
+  display: flex;
 
-padding: 1vh;
-margin-bottom: 1.5vh; 
-border-radius: 5px;
+  padding: 1vh;
+  margin-bottom: 1.5vh;
+  border-radius: 5px;
 `;
 
 const ItemButton = styled.button`
-padding: 0.75vh;
+  padding: 0.75vh;
 `;
 
-const ButtonContainer = styled.div`
-`;
+const ButtonContainer = styled.div``;
 
 const ItemButtonContainer = styled.div`
-display: flex;
-align-items: baseline;
-gap: 2vh;
+  display: flex;
+  align-items: baseline;
+  gap: 2vh;
 `;
 
 export default ToDoList;

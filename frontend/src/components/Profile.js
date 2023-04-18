@@ -11,6 +11,7 @@ import Loading from "./Loading";
 import ProfileRewardsPopUp from "./popups/ProfileRewardsPopUp";
 import AchievementsPopUp from "./popups/AchievementsPopUp";
 import { CurrentContext } from "../CurrentContext";
+import ViewRewardsPopUp from "./popups/ViewRewardsPopUp";
 
 const Profile = () => {
   const [reward, setReward] = useState("");
@@ -107,7 +108,7 @@ const Profile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (reward !== "") {
-      setRewards([...rewards, reward]);
+      setRewards([{ id: Math.floor(Math.random() * 8888888), reward }, ...rewards]);
       setReward("");
       setRewardsTrigger(true);
     }
@@ -163,12 +164,16 @@ const Profile = () => {
                     value={reward}
                     onChange={updateReward}
                   />
+                  <ButtonContainer>
+                  <ViewRewardsPopUp/>
                   <RewardButton type="submit">
                     Add Reward To Collection
                   </RewardButton>
+                  </ButtonContainer>
                 </InputAndButton>
               </RewardForm>
             </RewardContainer>
+            
 
             <AchievementsHeader>
               <AchievementsPopUp />
@@ -225,6 +230,12 @@ const Profile = () => {
     </>
   );
 };
+
+const ButtonContainer = styled.div`
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+`;
 
 const RightContainer = styled.div`
   display: flex;
@@ -397,7 +408,8 @@ const RewardInput = styled.input`
 
 const RewardButton = styled.button`
   margin-bottom: 5vh;
-  width: 20vw;
+  width: 15vw;
+  height: 7vh;
   border-radius: 5px;
   font-size: 0.9em;
 `;
