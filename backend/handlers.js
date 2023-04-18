@@ -60,6 +60,7 @@ const addUser = async (req, res) => {
     const newUser = {
       _id: uuidv4(),
       username: req.body.username,
+      realName: req.body.realName,
       email: req.body.email,
       rewards: req.body.rewards,
       toDos: req.body.toDos,
@@ -343,6 +344,42 @@ const updateWeeklyToDo = async (req, res) => {
   }
 };
 
+////---- PATCH user; update real name
+
+const updateName = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const email = req.params.userEmail;
+
+  try {
+    await client.connect();
+    const db = client.db("ToDo-List");
+    const findUser = await db.collection("users").findOne({ email: email });
+
+    const updateUser = {
+      $set: {
+        realName: req.body.realName,
+      },
+    };
+
+    const updatedList = await db
+      .collection("users")
+      .updateOne(findUser, updateUser);
+
+    client.close();
+    res.status(201).json({
+      status: 201,
+      message: "User Updated!",
+      data: updatedList,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({
+      status: 400,
+      message: "Something went wrong",
+    });
+  }
+};
+
 ///////////////////
 
 module.exports = {
@@ -354,5 +391,6 @@ module.exports = {
   updateMonthlys,
   updateWeeklys,
   updateMonthlyToDo,
-  updateWeeklyToDo
+  updateWeeklyToDo,
+  updateName
 };

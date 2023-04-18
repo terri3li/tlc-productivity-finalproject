@@ -13,14 +13,58 @@ import { CurrentContext } from "../CurrentContext";
 const Settings = ({ theme, setTheme, font, setFont }) => {
   const navigate = useNavigate();
   const [enabled, setEnabled] = useState(false);
-  const { level } = useContext(CurrentContext);
+  const [nameUpdate, setNameUpdate] = useState("");
+  const [submitTrigger, setSubmitTrigger] = useState(false);
+
+  const { level, realName, setRealName, user } = useContext(CurrentContext);
 
   ////---- not working yet or relevent, to be used for theme unlocks
+  // useEffect(() => {
+  //   if (level >= 5) {
+  //     setEnabled(true);
+  //   }
+  // }, [level]);
+
+  ////----- SUBMIT TO MONGO
+
   useEffect(() => {
-    if (level >= 5) {
-      setEnabled(true);
+    if (submitTrigger) {
+      fetch(`/get-user/real-name/${user.email}`, {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          realName: realName,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("real name updated");
+          setSubmitTrigger(false);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     }
-  }, [level]);
+  }, [submitTrigger]);
+
+  ////---- update name for header
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (nameUpdate !== "") {
+      setRealName(nameUpdate);
+      setNameUpdate("");
+      setSubmitTrigger(true);
+    }
+  };
+
+  const updateName = (e) => {
+    setNameUpdate(e.target.value);
+  };
 
   return (
     <PageContainer>
@@ -41,6 +85,18 @@ const Settings = ({ theme, setTheme, font, setFont }) => {
         </Theme>
       </ThemeContainer>
 
+      <SelectTheme>
+        Don't want to be greeted with your email? Tell us your name!
+      </SelectTheme>
+
+      <EnterName onSubmit={handleSubmit}>
+        <h3>Greeting name:</h3>
+        <NameInput type="text" onChange={updateName} value={nameUpdate} />
+        {""}
+
+        <NameButton type="submit">Enter</NameButton>
+      </EnterName>
+
       <BackButton
         onClick={() => {
           navigate("/profile");
@@ -51,6 +107,23 @@ const Settings = ({ theme, setTheme, font, setFont }) => {
     </PageContainer>
   );
 };
+
+const NameButton = styled.button`
+  padding: 8px;
+  border-radius: 5px;
+`;
+
+const EnterName = styled.form`
+  display: flex;
+  gap: 1vw;
+  align-items: center;
+`;
+
+const NameInput = styled.input`
+  width: 20vw;
+  height: 4vh;
+  border-radius: 5px;
+`;
 
 const SelectTheme = styled.h2`
   margin-top: 8vh;

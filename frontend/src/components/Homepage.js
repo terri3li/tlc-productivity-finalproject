@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { CurrentContext } from "../CurrentContext";
 import Header from "./Header";
 import MonthlyGoals from "./MonthlyGoals";
@@ -9,11 +9,15 @@ import HomeCalendar from "./Calendar";
 import WeeklyGoals from "./WeeklyGoals";
 
 const Homepage = () => {
-  const { isAuthenticated, mongoUser } = useContext(CurrentContext);
+  const { isAuthenticated, mongoUser, setNameTrigger } = useContext(CurrentContext);
+
+  useEffect(() => {
+    setNameTrigger(true);
+  }, [])
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       {!mongoUser ? (
         <div></div>
       ) : (

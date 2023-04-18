@@ -1,14 +1,16 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { CurrentContext } from "../CurrentContext";
 
 const Header = () => {
-  const { user, isAuthenticated } = useContext(CurrentContext);
+  const { user, mongoUser, isAuthenticated } = useContext(CurrentContext);
+  const [greetingName, setGreetingName] = useState("");
+  const [nameTrigger, setNameTrigger] = useState(false);
 
-  ////----- which greeting to use calculations 
+  ////----- which greeting to use calculations
   let date = new Date();
   let hour = date.getHours();
- 
+
   let timeOfDay = "";
   if (hour >= 0 && hour <= 11) {
     timeOfDay = "Morning";
@@ -18,8 +20,29 @@ const Header = () => {
     timeOfDay = "Evening";
   }
 
+  useEffect(() => {
+    if (nameTrigger && mongoUser.data) {
+      if (mongoUser.data.realName !== "") {
+        setGreetingName(mongoUser.data.realName);
+      } else {
+        setGreetingName(user.nickname);
+      }
+      setNameTrigger(false);
+    } else {
+      setNameTrigger(false);
+    }
+  }, [nameTrigger]);
 
-  ////----- if user logged in they will receive greeting and view homepage 
+  useEffect(() => {
+    if (mongoUser) {
+      setNameTrigger(true);
+    }
+  }, [mongoUser]);
+
+  console.log(nameTrigger);
+  console.log(greetingName);
+
+  ////----- if user logged in they will receive greeting and view homepage
   return (
     <Container>
       {!isAuthenticated ? (
@@ -28,7 +51,7 @@ const Header = () => {
         <>
           <Greeting>
             {" "}
-            Good {timeOfDay}, {user.nickname}{" "}
+            Good {timeOfDay}, {greetingName}{" "}
           </Greeting>
         </>
       )}
@@ -45,7 +68,8 @@ const Greeting = styled.h1`
 `;
 
 const Container = styled.div`
-display: flex;
-justify-content: center`;
+  display: flex;
+  justify-content: center;
+`;
 
 export default Header;

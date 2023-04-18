@@ -28,10 +28,14 @@ const CurrentProvider = ({ children }) => {
   //tracks users points, current level & rewards
   const [points, setPoints] = useState(0);
   const [level, setLevel] = useState(0);
-  const [rewards, setRewards] = useState(["Snack time"]);
+  const [rewards, setRewards] = useState([]);
 
   //nav bar clock
   const currentTime = format(new Date(), "HH:mm a").toLowerCase();
+
+  //get users name for header (optional)
+  const [realName, setRealName] = useState(""); 
+  const [nameTrigger, setNameTrigger] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -64,12 +68,13 @@ const CurrentProvider = ({ children }) => {
         },
         body: JSON.stringify({
           username: user.nickname,
+          realName: realName,
           email: user.email,
           avatar: user.picture,
           toDos: [],
           monthlyToDo: monthlyGoal,
           weeklyToDo: weeklyGoal,
-          rewards: [rewards],
+          rewards: [],
           tasksCompleted: tasksCompleted,
           weeklysCompleted: weeklysCompleted,
           monthlysCompleted,
@@ -88,6 +93,7 @@ const CurrentProvider = ({ children }) => {
         fetch(`/get-user/${user.email}`)
           .then((res) => res.json())
           .then((data) => {
+            setRealName(data.data.realName);
             setToDos(data.data.toDos);
             setRewards(data.data.rewards);
             setMonthlyGoal(data.data.monthlyToDo);
@@ -134,6 +140,10 @@ const CurrentProvider = ({ children }) => {
           setMonthlyGoal,
           weeklyGoal,
           setWeeklyGoal,
+          realName,
+          setRealName,
+          nameTrigger,
+          setNameTrigger
         }}
       >
         {children}

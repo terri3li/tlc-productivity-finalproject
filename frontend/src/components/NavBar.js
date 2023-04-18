@@ -6,6 +6,7 @@ import { FiHome } from "react-icons/fi";
 import { VscAccount } from "react-icons/vsc";
 import { CurrentContext } from "../CurrentContext";
 import Logout from "./Logout";
+import Header from "./Header"
 
 const NavBar = () => {
   const { isAuthenticated } = useContext(CurrentContext);
@@ -61,6 +62,7 @@ const NavBar = () => {
           </>
         )}
       </NavContainer>
+      <Header/>
     </>
   );
 };

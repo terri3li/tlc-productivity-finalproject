@@ -128,9 +128,7 @@ const Profile = () => {
     setLevel(4)
   } else if (points > 500) {
     setLevel(5)
-  } else {
-    setLevel(0)
-  }
+  } 
 
   return (
     <>
@@ -267,6 +265,8 @@ const ProfileContainer = styled.div`
   display: flex;
   margin-top: 10vh;
   justify-content: space-evenly;
+  margin-bottom: 10vh;
+  margin-top: 4vh;
 `;
 
 const Avatar = styled.div``;

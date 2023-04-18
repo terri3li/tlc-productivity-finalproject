@@ -18,6 +18,7 @@ const {
   updateWeeklys,
   updateMonthlyToDo,
   updateWeeklyToDo,
+  updateName
 } = require("./handlers");
 
 express()
@@ -28,6 +29,7 @@ express()
   .get("/get-user/:userEmail", checkForUser)
   .post("/new-user", addUser)
 
+  .patch("/get-user/real-name/:userEmail", updateName)
   .patch("/get-user/rewards/:userEmail", updateRewards)
   .patch("/get-user/toDos/:userEmail", updateToDos)
   .patch("/get-user/tasks-completed/:userEmail", updateTasks)
