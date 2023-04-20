@@ -13,7 +13,7 @@ Google Auth0 Login
 - These points are tracked on the profile page and used to unlock achievement badges and site themes
 
 Rewards/Treat Yourself
-- On the main page there is an option to hit a 'Treat Yourself' button. This pulls a random value from an array of rewards. Rewards can be plugged into the array on the Profile page to give the user a more personalized experience. 
+- On the main page there is an option to hit a 'Treat Yourself' button. This pulls a random value from an array of rewards that is set in the profile page. Rewards are added by the user to give them a more personalized experience. 
 
 Mongo Database: 
 - Info from Auth0 Login is used to create a Mongo user which holds all of the current daily, weekly and monthly to do tasks alongside the users custom rewards and task completed count
@@ -26,9 +26,9 @@ Theme Toggle:
 - Colored theme modes (currently 5 themes) including a Light and Dark mode are available on the Settings page
 
 Clock & Header: 
-- Using the time and information from Auth0 to create a personalized greeting for the user 
+- Using the time and information from Auth0 to create a personalized greeting for the user. Auth0 will use the 'nickname' value received from the email (thisisthenickname@butnotthispart.com). Assuming the user doesn't want to continue using their email for their greeting there is an option in Settings to further personalize it.
 
 **Stretch/To Do (yes, the irony):** 
 Below is a shot from the to do list items stored in my personal account when I log in... which just so happen to be the remaining work left for this project. 
 
-![sample_todo](stretchsampletodo.png)
+![stretch_todo](stretchupdate2.png)
