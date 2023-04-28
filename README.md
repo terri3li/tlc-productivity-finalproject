@@ -1,5 +1,5 @@
 # tlc-productivity-finalproject
-My Final Project for cb-wd-23 (Concordia Bootcamp)
+My Final Project for cb-wd-23 (Concordia Final Project)
 
 **A Gamified To-Do List Tracker**
 
