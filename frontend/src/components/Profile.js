@@ -175,7 +175,7 @@ const Profile = () => {
 
             <AchievementsHeader>
               <AchievementsPopUp />
-              Achievements (stretch - unfinished):
+              Achievements (get things done to unlock these!):
             </AchievementsHeader>
             <BadgeFlex>
               <BadgeContainer>
